@@ -14,6 +14,9 @@
 
 <script type="text/javascript">
 
+var width = screen.width;
+var height = screen.height;
+
 //WIDTH x HEIGHT
 var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
@@ -36,16 +39,22 @@ var score = 0;
 var scoreText;
 
 function create() {
-
+this.background = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'sky');
+this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+this.scale.minWidth = 240;
+this.scale.minHeight = 170;
+this.scale.maxWidth = 2880;
+this.scale.maxHeight = 1920;
+this.scale.setScreenSize(true);
 this.game.scale.pageAlignHorizontally = true;
 this.game.scale.pageAlignVertically = true;
 this.game.scale.refresh();
-
+this.game.world.setBounds(0, 0, 3000, height);
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  A simple background for our game
-    game.add.sprite(0, 0, 'sky');
+    game.add.sprite(0, 300, 'sky');
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = game.add.group();
@@ -55,12 +64,14 @@ this.game.scale.refresh();
 
     // Here we create the ground.
     var ground = platforms.create(0, game.world.height - 80, 'ground');
-
     //  This stops it from falling away when you jump on it
     ground.body.immovable = true;
 
+    ground = platforms.create(width - 640, game.world.height - 80, 'ground');
+    ground.body.immovable = true;
+
     //  Now let's create two ledges
-    var ledge = platforms.create(720, 400, 'platform');
+    var ledge = platforms.create(720, 900, 'platform');
     ledge.body.immovable = true;
     ledge.scale.setTo(0.6, 0.6);
     ledge = platforms.create(-150, 250, 'platform');
@@ -106,6 +117,7 @@ this.game.scale.refresh();
 
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
+    game.camera.follow(player);
 
 }
 
@@ -126,14 +138,14 @@ function update() {
     if (cursors.left.isDown)
     {
         //  Move to the left
-        player.body.velocity.x = -150;
+        player.body.velocity.x = -350;
 
         player.animations.play('left');
     }
     else if (cursors.right.isDown)
     {
         //  Move to the right
-        player.body.velocity.x = 150;
+        player.body.velocity.x = 350;
 
         player.animations.play('right');
     }
