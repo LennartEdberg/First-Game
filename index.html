@@ -130,6 +130,27 @@ game.time.advancedTiming = true
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
     game.camera.follow(player);
+    
+    // Adds group for boars 
+    boars = game.add.group();
+    boars.enableBody = true;
+    
+    // Created function to add boars
+    function addBoars(){
+        
+        var boar = boars.create(i * 70, 500, 'boar');
+        boar.body.collideWorldBounds = true;
+        boar.body.gravity.y = 900;
+        boar.scale.setTo(1, 1);
+        boar.body.bounce.y = 0.5;
+    }
+    
+    // Loop to add how many boars you want in-game
+    for (var i = 0; i < 5; i++)
+        {
+            addBoars();
+        }
+    
 }
 
 function update() {
@@ -139,6 +160,9 @@ function update() {
     game.physics.arcade.collide(stars, platforms);
     game.physics.arcade.collide(player, stars);
     game.physics.arcade.collide(stars, stars);
+    game.physics.arcade.collide(boars, platforms);
+    game.physics.arcade.collide(boars, boars);    
+    game.physics.arcade.collide(player, boars);    
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
    // game.physics.arcade.overlap(player, stars, null, this);
