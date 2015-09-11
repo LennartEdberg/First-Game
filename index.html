@@ -26,9 +26,11 @@ function preload() {
     game.load.image('ground', 'assets/ground.png');
     game.load.image('platform', 'assets/platform.png');
     game.load.image('star', 'assets/barrel.png');
+    game.load.image('bullet', 'assets/Fireball.png');
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     // Boar sprite
     game.load.spritesheet('boar', 'assets/boarsprite.png', 122, 98);
+
 
 }
 
@@ -41,6 +43,10 @@ var stars;
 var fpsText;
 var playerName;
 var boars;
+var bullets;
+
+var fireRate = 100;
+var nextFire = 0;
 
 function create() {
 
@@ -55,10 +61,18 @@ this.game.scale.pageAlignVertically = true;
 this.game.scale.refresh();
 this.game.world.setBounds(0, 0, width*3, height);
 game.time.advancedTiming = true
+
+
 //fpsText = game.add.text(16, 16, 'FPS:' + fps, { fontSize: '32px', fill: '#000' });
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    bullets = game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
 
+    bullets.createMultiple(50, 'bullet');
+    bullets.setAll('checkWorldBounds', true);
+    bullets.setAll('outOfBoundsKill', true);
     //  A simple background for our game
     game.add.sprite(0, 0, 'sky');
     game.add.sprite(width, 0, 'sky');
@@ -100,7 +114,8 @@ game.time.advancedTiming = true
     player.body.bounce.y = 0.2;
     player.body.gravity.y = 1000;
     player.body.collideWorldBounds = true;
-
+    player.anchor.set(0.5);
+    player.body.allowRotation = false;
     //  Our two animations, walking left and right.
     player.animations.add('left', [5, 6, 7, 8, 9], 10, true);
     player.animations.add('right', [0, 1, 2, 3, 4], 10, true);
@@ -168,6 +183,27 @@ function update() {
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
    // game.physics.arcade.overlap(player, stars, null, this);
 
+        if (game.input.activePointer.isDown)
+    {
+        fire();
+    }
+
+    function fire() {
+
+    if (game.time.now > nextFire && bullets.countDead() > 0)
+    {
+        nextFire = game.time.now + fireRate;
+
+        var bullet = bullets.getFirstDead();
+
+        console.log(bullet);
+
+        bullet.reset(player.x - 8, player.y - 8);
+
+        game.physics.arcade.moveToPointer(bullet, 500);
+    }
+
+}
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
@@ -202,8 +238,8 @@ function update() {
     }
 
     //PlayerName
-    playerName.x = Math.floor(player.x + player.width / 2);
-    playerName.y = Math.floor(player.y + player.height - player.height/2 - player.height/3 - player.height/3);
+    playerName.x = Math.floor(player.x);
+    playerName.y = Math.floor(player.y - player.height/2 - player.height/5);
 
     //fps = game.time.fps;
     
