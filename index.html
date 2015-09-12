@@ -66,6 +66,7 @@ game.time.advancedTiming = true
 //fpsText = game.add.text(16, 16, 'FPS:' + fps, { fontSize: '32px', fill: '#000' });
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
+
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -134,7 +135,7 @@ game.time.advancedTiming = true
         star.body.collideWorldBounds = true;
         //  Let gravity do its thing
         star.body.gravity.y = 900;
-        star.scale.setTo(0.5, 0.5);
+        star.scale.setTo(0.8, 0.8);
         //  This just gives each star a slightly random bounce value
         star.body.bounce.y = 0.5;
     }
@@ -196,11 +197,11 @@ function update() {
 
         var bullet = bullets.getFirstDead();
 
-        console.log(bullet);
-
         bullet.reset(player.x - 8, player.y - 8);
 
         game.physics.arcade.moveToPointer(bullet, 500);
+        console.log(bullet.x);
+        console.log(player.x);
     }
 
 }
