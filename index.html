@@ -46,7 +46,7 @@ var boars;
     
 var bullets;
 var sprite;
-var fireRate = 100;
+var fireRate = 300;
 var nextFire = 0;
 
 function create() {
@@ -260,9 +260,10 @@ function update() {
 
         var bullet = bullets.getFirstDead();
 
-        bullet.reset(sprite.x - 8, sprite.y - 8);
+        bullet.reset(player.x - 8, player.y - 8);
 
-        game.physics.arcade.moveToPointer(bullet, 300);
+        bullet.rotation = game.physics.arcade.angleToPointer(player);
+        game.physics.arcade.moveToPointer(bullet, 500);
     }
 
 }
