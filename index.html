@@ -47,6 +47,7 @@ var boars;
 var explosions;
 var bullets;
 var sprite;
+var pathCounter = 0;
 var fireRate = 300;
 var nextFire = 0;
 
@@ -165,17 +166,17 @@ game.time.advancedTiming = true
     boars = game.add.group();
     boars.enableBody = true;
 
-    // Created function to add boars
-for (var i = 0; i < 5; i++)
-{
-    var boar = boars.create(i * 250, game.world.height - 300, 'boar');
+    var boar = boars.create(450, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
-       // boar.animations.add('left', [4, 1, 0, 2, 3, 4], 10, true);
-        //boar.animations.add('right', [10, 6, 5, 7, 8, 10], 10, true);
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
-    
-}
+        boar.health = 100;
+       boars.forEach(function(boar)
+    {
+        boar.animations.add('walk_left', [4, 3, 2, 1, 0, 4], 10, true);
+        boar.animations.add('walk_right', [9, 8, 7, 6, 5, 9], 10, true);
+        var boarHP = 100;
+    });
     
     bullets = game.add.group();
     bullets.enableBody = true;
@@ -286,13 +287,23 @@ function render() {
 
 }
 
+    function enemyPath()
+    {
+        if(pathCounter < 325)
+        {
+
+        }
+    }
+
     function hitEnemy(enemy, bullet) {
     var explosion = explosions.getFirstExists(false);
     explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
     explosion.body.velocity.y = enemy.body.velocity.y;
     explosion.animations.add('explosion');
     explosion.play('explosion', 30, false, true);
-    bullet.kill()
+    bullet.kill();
+    enemy.health -= 10;
+    console.log(enemy.health);
 }
 
 </script>
