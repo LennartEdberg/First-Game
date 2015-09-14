@@ -145,6 +145,7 @@ game.time.advancedTiming = true
         star.scale.setTo(0.8, 0.8);
         //  This just gives each star a slightly random bounce value
         star.body.bounce.y = 0.5;
+        star.health = 50;
     }
 
     //Lägger till playerName!
@@ -260,6 +261,7 @@ function update() {
     
 game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
 game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
+game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
 }
     
     function fire() {
@@ -304,13 +306,13 @@ function render() {
         bullet.kill();
     }
 
-    function hitEnemy(boar, bullet) {
+    function hitEnemy(enemy, bullet) {
 
-        getExplosion(boar.body.x + 30, boar.body.y+15);
+        getExplosion(enemy.body.x + 30, enemy.body.y+15);
         bullet.kill();
 
-        boar.damage(10);
-        console.log(boar.health);
+        enemy.damage(10);
+        console.log(enemy.health);
     }
 
 </script>
