@@ -26,7 +26,7 @@ function preload() {
     game.load.image('ground', 'assets/ground.png');
     game.load.image('platform', 'assets/platform.png');
     game.load.image('star', 'assets/barrel.png');
-    game.load.image('bullet', 'assets/Fireball.png');
+    game.load.spritesheet('bullet', 'assets/FireballSprite.png', 124, 43);
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
     game.load.spritesheet('boar', 'assets/boarsprite.png', 126, 98);
@@ -273,8 +273,10 @@ game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
         bullet.scale.setTo(0.8,0.8);
         bullet.reset(player.x - 8, player.y - 8);
         bullet.lifespan = 2000;
+        var animation = bullet.animations.add('Fireball', [0,1,2,3], 20, true);
         bullet.rotation = game.physics.arcade.angleToPointer(player);
         game.physics.arcade.moveToPointer(bullet, 500);
+        bullet.play('Fireball', 20, true, false);
     }
 
 }
