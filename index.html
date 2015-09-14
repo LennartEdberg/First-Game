@@ -48,6 +48,9 @@ var sprite;
 var pathCounter = 0;
 var fireRate = 300;
 var nextFire = 0;
+var score = 0;
+var scoreText;
+
 
 function create() {
 
@@ -190,6 +193,9 @@ game.time.advancedTiming = true
         fire();
     }
     
+    // Score text
+    scoreText = game.add.text(5, 5, 'Score: ', { fontSize: '32px', fill: '#fff' });
+
 }
     
 
@@ -284,6 +290,7 @@ function render() {
 
     game.debug.text('FPS:' + game.time.fps || '--', 20, 20, "#ffffff");
 
+
 }
 
     function getExplosion(x, y)
@@ -313,6 +320,7 @@ function render() {
 
         enemy.damage(10);
         console.log(enemy.health);
+
     }
 
 </script>
