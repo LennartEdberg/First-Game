@@ -283,7 +283,6 @@ function render() {
 
 
 }
-    
 
     function getExplosion(x, y)
     {
@@ -309,11 +308,10 @@ function render() {
 
         getExplosion(boar.body.x + 30, boar.body.y+15);
         bullet.kill();
-        console.log(boar.health);
-        boar.damage(10);
-        boar.animations.play('walk_left');
 
-}
+        boar.damage(10);
+        console.log(boar.health);
+    }
 
 </script>
 
