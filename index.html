@@ -28,6 +28,7 @@ function preload() {
     game.load.image('star', 'assets/barrel.png');
     game.load.image('bullet', 'assets/Fireball.png');
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
+    game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
     // Boar sprite
     game.load.spritesheet('boar', 'assets/boarsprite.png', 122, 98);
 
@@ -43,7 +44,7 @@ var stars;
 var fpsText;
 var playerName;
 var boars;
-    
+var explosions;
 var bullets;
 var sprite;
 var fireRate = 300;
@@ -72,9 +73,20 @@ game.time.advancedTiming = true
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-    bullets.createMultiple(50, 'bullet');
+    bullets.createMultiple(30, 'bullet');
     bullets.setAll('anchor.x', 0.5);
     bullets.setAll('anchor.y', 0.5);
+
+    //  An explosion pool
+    explosions = game.add.group();
+    explosions.enableBody = true;
+    explosions.physicsBodyType = Phaser.Physics.ARCADE;
+    explosions.createMultiple(30, 'explosion');
+    explosions.setAll('anchor.x', 0.5);
+    explosions.setAll('anchor.y', 0.5);
+    explosions.forEach( function(explosion) {
+    explosion.animations.add('explosion');
+    });
     //  A simple background for our game
     game.add.sprite(0, 0, 'sky');
     game.add.sprite(width, 0, 'sky');
@@ -168,8 +180,7 @@ for (var i = 0; i < 5; i++)
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
-
-    bullets.createMultiple(50, 'bullet');
+    bullets.createMultiple(30, 'bullet');
     bullets.setAll('checkWorldBounds', true);
     bullets.setAll('outOfBoundsKill', true);
     
@@ -250,6 +261,7 @@ function update() {
         fire();
     }
     
+game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
 }
     
     function fire() {
@@ -270,11 +282,18 @@ function update() {
 
 function render() {
 
-    game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.total, 32, 32);
-    game.debug.spriteInfo(sprite, 32, 450);
+
 
 }
 
+    function hitEnemy(enemy, bullet) {
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
+    explosion.body.velocity.y = enemy.body.velocity.y;
+    explosion.animations.add('explosion');
+    explosion.play('explosion', 30, false, true);
+    bullet.kill()
+}
 
 </script>
 
