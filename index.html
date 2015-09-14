@@ -79,7 +79,7 @@ game.time.advancedTiming = true
     //  An explosion pool
     explosions = game.add.group();
     explosions.createMultiple(30, 'explosion');
-    explosions.forEach(setupInvader, this);
+
 
     //  A simple background for our game
     game.add.sprite(0, 0, 'sky');
@@ -191,14 +191,8 @@ game.time.advancedTiming = true
     
 }
     
-    
-    function setupInvader (boar) {
 
-    boar.anchor.x = 0.5;
-    boar.anchor.y = 0.5;
-    boar.animations.add('explosion');
 
-}
  
     
 function update() {
@@ -299,15 +293,13 @@ function render() {
     function hitEnemy(boar, bullet) {
         var explosion = explosions.getFirstExists(false);
         explosion = this.game.add.sprite(0, 0, 'explosion');
-        explosion.anchor.setTo(0.5, 0.5);
-         var animation = explosion.animations.add('explosion', [0,1,2,3], 60, false);
+         var animation = explosion.animations.add('explosion', [0,1,2,3], 20, false);
         animation.killOnComplete = true;
 
         
-        explosion.reset(boar.body.x, boar.body.y);
-        explosion.play('explosion', 30, false, true);
+        explosion.reset(boar.body.x + 10, boar.body.y);
+        explosion.play('explosion', 20, false, true);
         bullet.kill();
-        boar.health -= 10;
         console.log(boar.health);
         boar.damage(10);
         boar.animations.play('walk_left');
