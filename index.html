@@ -48,7 +48,10 @@ var sprite;
 var pathCounter = 0;
 var fireRate = 300;
 var nextFire = 0;
-
+var score = 0;
+var scoreText;
+    
+    
 function create() {
 
 this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -190,6 +193,9 @@ game.time.advancedTiming = true
         fire();
     }
     
+    // Score text
+    scoreText = game.add.text(5, 5, 'Score: ', { fontSize: '32px', fill: '#fff' });
+    
 }
     
 
@@ -283,7 +289,6 @@ game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
 function render() {
 
 
-
 }
 
     function getExplosion(x, y)
@@ -313,6 +318,12 @@ function render() {
 
         enemy.damage(10);
         console.log(enemy.health);
+        
+        if(enemy.health == 0) {
+            score += 10;
+            scoreText.text = 'Score: ' + score;
+            console.log("score is = " + score);
+        }
     }
 
 </script>
