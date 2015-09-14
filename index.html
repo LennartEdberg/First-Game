@@ -36,8 +36,6 @@ function preload() {
 var player;
 var platforms;
 var cursors;
-var fpsText;
-var fps;
 var stars;
 var fpsText;
 var playerName;
@@ -45,11 +43,9 @@ var boars;
 var explosions;
 var bullets;
 var sprite;
-var pathCounter = 0;
 var fireRate = 300;
 var nextFire = 0;
 var score = 0;
-var scoreText;
 
 
 function create() {
@@ -67,7 +63,6 @@ this.game.world.setBounds(0, 0, width*3, height);
 game.time.advancedTiming = true
 
 
-//fpsText = game.add.text(16, 16, 'FPS:' + fps, { fontSize: '32px', fill: '#000' });
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -192,9 +187,7 @@ game.time.advancedTiming = true
     {
         fire();
     }
-    
-    // Score text
-    scoreText = game.add.text(5, 5, 'Score: ', { fontSize: '32px', fill: '#fff' });
+
 
 }
     
@@ -289,6 +282,7 @@ game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
 function render() {
 
     game.debug.text('FPS:' + game.time.fps || '--', 20, 20, "#ffffff");
+    game.debug.text('Score:' + score || '--', 20, 40, "#ffffff");
 
 
 }
@@ -319,6 +313,10 @@ function render() {
         bullet.kill();
 
         enemy.damage(10);
+        if(enemy.health == 0)
+        {
+            score += 10;
+        }
         console.log(enemy.health);
 
     }
