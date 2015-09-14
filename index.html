@@ -297,13 +297,14 @@ function render() {
     }
 
     function hitEnemy(boar, bullet) {
+        
         var explosion = explosions.getFirstExists(false);
         explosion = this.game.add.sprite(0, 0, 'explosion');
-        explosion.anchor.setTo(0.5, 0.5);
-         var animation = explosion.animations.add('explosion', [0,1,2,3], 60, false);
+        explosion.anchor.setTo(0, 0);
+        
+        var animation = explosion.animations.add('explosion', [0,1,2,3], 60, false);
         animation.killOnComplete = true;
 
-        
         explosion.reset(boar.body.x, boar.body.y);
         explosion.play('explosion', 30, false, true);
         bullet.kill();
