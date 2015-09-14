@@ -30,7 +30,7 @@ function preload() {
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
     // Boar sprite
-    game.load.spritesheet('boar', 'assets/boarsprite.png', 122, 98);
+    game.load.spritesheet('boar', 'assets/boarsprite.png', 138, 98);
 
 
 }
@@ -175,7 +175,6 @@ game.time.advancedTiming = true
     {
         boar.animations.add('walk_left', [4, 3, 2, 1, 0, 4], 10, true);
         boar.animations.add('walk_right', [9, 8, 7, 6, 5, 9], 10, true);
-        var boarHP = 100;
     });
     
     bullets = game.add.group();
@@ -294,6 +293,7 @@ function render() {
     explosion.play('explode', 10, false, true);
     bullet.kill();
    enemy.damage(10);
+    enemy.animations.play('walk_right');
 console.log(enemy.health);
 }
 
