@@ -30,6 +30,7 @@ function preload() {
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
     game.load.spritesheet('boar', 'assets/boarsprite.png', 126, 98);
+    game.load.spritesheet('dead_boar', 'assets/DeadBoar2.png', 142, 120);
 
 }
 
@@ -77,6 +78,7 @@ game.time.advancedTiming = true
     //  An explosion pool
     explosions = game.add.group();
     explosions.createMultiple(30, 'explosion');
+
 
 
     //  A simple background for our game
@@ -166,6 +168,7 @@ game.time.advancedTiming = true
         boars.forEach(function(boar){   
             boar.animations.add('walk_left', [0, 1, 2, 3, 4], 10, true);
             boar.animations.add('walk_right', [5, 6, 7, 8, 9], 10, true);
+            boar.animations.add('Death', [0,1,2,3], 10, true);
             var boarHP = 100;
         });
                       
@@ -271,7 +274,7 @@ game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
 
         var bullet = bullets.getFirstDead();
         bullet.scale.setTo(0.8,0.8);
-        bullet.reset(player.x - 8, player.y - 8);
+        bullet.reset(player.x, player.y+7);
         bullet.lifespan = 2000;
         var animation = bullet.animations.add('Fireball', [0,1,2,3], 20, true);
         bullet.rotation = game.physics.arcade.angleToPointer(player);
@@ -317,6 +320,11 @@ function render() {
         enemy.damage(10);
         if(enemy.health == 0)
         {
+            var dead_boar = this.game.add.sprite(0, 0, 'dead_boar');
+            var animation = dead_boar.animations.add('death', [0,1,2,3], 10, false);
+            animation.killOnComplete = true;
+            dead_boar.reset(enemy.body.x, enemy.body.y);
+            dead_boar.play('death', 10, false, true);
             score += 10;
         }
         console.log(enemy.health);
