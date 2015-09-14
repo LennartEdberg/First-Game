@@ -86,7 +86,7 @@ game.time.advancedTiming = true
     explosions.setAll('anchor.x', 0.5);
     explosions.setAll('anchor.y', 0.5);
     explosions.forEach( function(explosion) {
-    explosion.animations.add('explosion');
+    explosion.animations.add('explode');
     });
     //  A simple background for our game
     game.add.sprite(0, 0, 'sky');
@@ -274,7 +274,7 @@ game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
         var bullet = bullets.getFirstDead();
         bullet.scale.setTo(0.8,0.8);
         bullet.reset(player.x - 8, player.y - 8);
-
+        bullet.lifespan = 2000;
         bullet.rotation = game.physics.arcade.angleToPointer(player);
         game.physics.arcade.moveToPointer(bullet, 500);
     }
@@ -287,30 +287,14 @@ function render() {
 
 }
 
-    function enemyPath()
-    {
-        if(pathCounter < 325)
-        {
-
-        }
-    }
-
     function hitEnemy(enemy, bullet) {
     var explosion = explosions.getFirstExists(false);
     explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
     explosion.body.velocity.y = enemy.body.velocity.y;
-    explosion.animations.add('explosion');
-    explosion.play('explosion', 30, false, true);
+    explosion.play('explode', 10, false, true);
     bullet.kill();
-    if(enemy.health <= 0)
-    {
-        console.log(enemy.health);
-        enemy.kill();
-    }
-    else{
-    enemy.health -= 10;
-    console.log(enemy.health);
-    }
+   enemy.damage(10);
+console.log(enemy.health);
 }
 
 </script>
