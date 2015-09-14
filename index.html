@@ -300,7 +300,7 @@ function render() {
         var explosion = explosions.getFirstExists(false);
         explosion = this.game.add.sprite(0, 0, 'explosion');
         explosion.anchor.setTo(0.5, 0.5);
-         var animation = explosion.animations.add('boom', [0,1,2,3], 60, false);
+         var animation = explosion.animations.add('explosion', [0,1,2,3], 60, false);
         animation.killOnComplete = true;
 
         
