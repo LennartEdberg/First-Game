@@ -289,6 +289,7 @@ function render() {
     {
         var explosion = explosions.getFirstExists(false);
         explosion = this.game.add.sprite(0, 0, 'explosion');
+        explosion.scale.setTo(1.2, 1.2);
         var animation = explosion.animations.add('explosion', [0,1,2,3], 20, false);
         animation.killOnComplete = true;
         explosion.reset(bullet.body.x, bullet.body.y);
@@ -302,9 +303,10 @@ function render() {
 
         var explosion = explosions.getFirstExists(false);
         explosion = this.game.add.sprite(0, 0, 'explosion');
+        explosion.scale.setTo(1.2, 1.2);
         var animation = explosion.animations.add('explosion', [0,1,2,3], 20, false);
         animation.killOnComplete = true;
-        explosion.reset(boar.body.x + 10, boar.body.y);
+        explosion.reset(boar.body.x, boar.body.y - 15);
         explosion.play('explosion', 20, false, true);
         bullet.kill();
         console.log(boar.health);
