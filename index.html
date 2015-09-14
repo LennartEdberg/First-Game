@@ -282,7 +282,7 @@ game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
 
 function render() {
 
-
+    game.debug.text('FPS:' + game.time.fps || '--', 20, 20, "#ffffff");
 
 }
 
