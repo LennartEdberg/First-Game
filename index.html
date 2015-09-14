@@ -29,7 +29,6 @@ function preload() {
     game.load.image('bullet', 'assets/Fireball.png');
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
-    // Boar sprite
     game.load.spritesheet('boar', 'assets/boarsprite.png', 138, 98);
 
 
@@ -262,6 +261,7 @@ function update() {
     }
     
 game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
+game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
 }
     
     function fire() {
@@ -285,6 +285,11 @@ function render() {
 
 
 }
+
+    function hitObstacle(obstacle, bullet)
+    {
+        bullet.kill();
+    }
 
     function hitEnemy(enemy, bullet) {
     var explosion = explosions.getFirstExists(false);
