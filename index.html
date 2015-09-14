@@ -287,7 +287,15 @@ function render() {
 
     function hitObstacle(obstacle, bullet)
     {
+        var explosion = explosions.getFirstExists(false);
+        explosion = this.game.add.sprite(0, 0, 'explosion');
+        var animation = explosion.animations.add('explosion', [0,1,2,3], 20, false);
+        animation.killOnComplete = true;
+        explosion.reset(bullet.body.x, bullet.body.y);
+        explosion.anchor.set(0.3, 0.3);
+        explosion.play('explosion', 20, false, true);
         bullet.kill();
+
     }
 
     function hitEnemy(boar, bullet) {
