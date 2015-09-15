@@ -31,6 +31,7 @@ function preload() {
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
     game.load.spritesheet('boar', 'assets/boarsprite.png', 126, 98);
     game.load.spritesheet('dead_boar', 'assets/DeadBoar2.png', 142, 120);
+    game.load.spritesheet('dead_barrel', 'assets/DeadBarrel.png', 153, 158);
 
 }
 
@@ -141,6 +142,7 @@ game.time.advancedTiming = true
         var star = stars.create(i * 70, 500, 'star');
         star.body.collideWorldBounds = true;
         //  Let gravity do its thing
+        star.name = "Barrel";
         star.body.gravity.y = 900;
         star.scale.setTo(0.8, 0.8);
         //  This just gives each star a slightly random bounce value
@@ -330,6 +332,15 @@ function render() {
             dead_boar.reset(enemy.body.x, enemy.body.y);
             dead_boar.play('death', 10, false, true);
             score += 10;
+            }
+            if(enemy.name === "Barrel")
+            {
+            var dead_barrel = this.game.add.sprite(0, 0, 'dead_barrel');
+            dead_barrel.scale.setTo(1, 1);
+            var animation = dead_barrel.animations.add('death', [0,1,2,3], 10, false);
+            animation.killOnComplete = true;
+            dead_barrel.reset(enemy.body.x - 35, enemy.body.y - 25);
+            dead_barrel.play('death', 10, false, true);
             }
             else
             {
