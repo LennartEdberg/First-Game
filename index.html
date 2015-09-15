@@ -165,6 +165,7 @@ game.time.advancedTiming = true
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
         boar.health = 100;
+        boar.name = "BoarEnemy";
         boars.forEach(function(boar){   
             boar.animations.add('walk_left', [0, 1, 2, 3, 4], 10, true);
             boar.animations.add('walk_right', [5, 6, 7, 8, 9], 10, true);
@@ -320,14 +321,22 @@ function render() {
         enemy.damage(10);
         if(enemy.health == 0)
         {
+            if(enemy.name === "BoarEnemy")
+            {
             var dead_boar = this.game.add.sprite(0, 0, 'dead_boar');
+            dead_boar.scale.setTo(1.2, 1.2);
             var animation = dead_boar.animations.add('death', [0,1,2,3], 10, false);
             animation.killOnComplete = true;
             dead_boar.reset(enemy.body.x, enemy.body.y);
             dead_boar.play('death', 10, false, true);
             score += 10;
+            }
+            else
+            {
+            }
         }
         console.log(enemy.health);
+        console.log(enemy.name);
 
     }
 
