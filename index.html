@@ -26,6 +26,7 @@ function preload() {
     game.load.image('ground', 'assets/ground.png');
     game.load.image('platform', 'assets/platform.png');
     game.load.image('star', 'assets/barrel.png');
+    game.load.image('box', 'assets/WoodenBox.png');
     game.load.spritesheet('bullet', 'assets/FireballSprite.png', 124, 43);
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
@@ -158,6 +159,24 @@ game.time.advancedTiming = true
     cursors = game.input.keyboard.createCursorKeys();
     game.camera.follow(player);
     
+    //Add boxes!
+    boxes = game.add.group();
+    boxes.enableBody = true;
+
+    for (var i = 0; i < 8; i++)
+    {
+        //  Create a star inside of the 'stars' group
+        var box = boxes.create(300, game.world.height - 144 - i * 82, 'box');
+        box.body.collideWorldBounds = true;
+        box.anchor.set(0.5);
+        //  Let gravity do its thing
+        box.name = "Box";
+        box.body.moves = false;
+        box.body.gravity.y = 90;
+        //  This just gives each star a slightly random bounce value
+        box.health = 50;
+    }
+
     // Adds group for boars 
     boars = game.add.group();
     boars.enableBody = true;
@@ -172,7 +191,6 @@ game.time.advancedTiming = true
             boar.animations.add('walk_left', [0, 1, 2, 3, 4], 10, true);
             boar.animations.add('walk_right', [5, 6, 7, 8, 9], 10, true);
             boar.animations.add('Death', [0,1,2,3], 10, true);
-            var boarHP = 100;
         });
                       
     bullets = game.add.group();
@@ -212,6 +230,9 @@ function update() {
     game.physics.arcade.collide(boars, boars);
     game.physics.arcade.collide(boars, stars);
     game.physics.arcade.collide(player, boars);
+    game.physics.arcade.collide(boxes, boxes);
+    game.physics.arcade.collide(boxes, player);
+    game.physics.arcade.collide(boxes, platforms);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
    // game.physics.arcade.overlap(player, stars, null, this);
@@ -267,6 +288,7 @@ function update() {
 game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
 game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
 game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
+    game.physics.arcade.overlap(boxes, bullets, hitEnemy, null, this);
 }
     
     function fire() {
