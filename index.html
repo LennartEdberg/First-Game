@@ -107,11 +107,11 @@ game.time.advancedTiming = true
 
 
     //  Now let's create two ledges
-    //var ledge = platforms.create(720, 0, 'platform');
-    //ledge.body.immovable = true;
+    var ledge = platforms.create(1200, game.world.height - 400, 'platform');
+    ledge.body.immovable = true;
 
-    //ledge = platforms.create(-150, 0, 'platform');
-    //ledge.body.immovable = true;
+    ledge = platforms.create(600, game.world.height - 500, 'platform');
+    ledge.body.immovable = true;
 
 
     // The player and its settings
@@ -186,6 +186,9 @@ game.time.advancedTiming = true
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
         boar.health = 100;
+        boar.velocity = 100;
+        boar.maxDistance = 1000;
+        boar.minDistance = 500;
         boar.name = "BoarEnemy";
         boars.forEach(function(boar){   
             boar.animations.add('walk_left', [0, 1, 2, 3, 4], 10, true);
@@ -236,8 +239,7 @@ function update() {
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
    // game.physics.arcade.overlap(player, stars, null, this);
-
-     
+     enemyMove(boars);
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
@@ -296,7 +298,6 @@ game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
     if (game.time.now > nextFire && bullets.countDead() > 0)
     {
         nextFire = game.time.now + fireRate;
-
         var bullet = bullets.getFirstDead();
         bullet.scale.setTo(0.8,0.8);
         bullet.reset(player.x, player.y+7);
@@ -316,6 +317,23 @@ function render() {
 
 
 }
+
+    function enemyMove(enemies)
+    {
+        enemies.forEach(function(enemy){
+        if(enemy.body.x > enemy.maxDistance)
+        {
+            enemy.body.velocity.x = -1 * enemy.velocity;
+            enemy.animations.play('walk_left');
+        }
+
+        if(enemy.minDistance > enemy.body.x)
+        {
+            enemy.body.velocity.x = enemy.velocity;
+            enemy.animations.play('walk_right');
+        }
+        });
+    }
 
     function getExplosion(x, y)
     {
