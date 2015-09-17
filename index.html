@@ -206,8 +206,20 @@ game.time.advancedTiming = true
     boars = game.add.group();
     boars.enableBody = true;
     
-    for (var i = 0; i < 7; i++){
+    for (var i = 0; i < 4; i++){
         var boar = boars.create(i * 1500, game.world.height - 300, 'boar');
+        boar.body.collideWorldBounds = true;
+        boar.body.gravity.y = 1000;
+        boar.body.bounce.y = 0.2;
+        boar.health = 100;
+        boar.velocity = 100;
+        boar.maxDistance = 1000;
+        boar.minDistance = 500;
+        boar.name = "BoarEnemy";
+    }
+    
+    for (var j = 0; j < 4; j++){
+        var boar = boars.create(j * 2000, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
