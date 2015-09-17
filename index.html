@@ -34,6 +34,7 @@ function preload() {
     game.load.spritesheet('dead_boar', 'assets/DeadBoar2.png', 142, 120);
     game.load.spritesheet('dead_barrel', 'assets/DeadBarrel.png', 153, 158);
     game.load.spritesheet('coin', 'assets/coin.png', 44, 40);
+    game.load.spritesheet('deadPlayer', 'assets/deadPlayer.png', 79, 106);
 
 }
 
@@ -343,7 +344,14 @@ function render() {
 
 }
     
-    function killPlayer(player, boar){
+    function killPlayer(player, boar)
+    {
+            var dead_player = this.game.add.sprite(0, 0, 'deadPlayer');
+            dead_player.scale.setTo(1.2, 1.2);
+            var animation = dead_player.animations.add('deadPlayer', [0,1,2,3], 12, false);
+            animation.killOnComplete = true;
+            dead_player.reset(player.body.x, player.body.y);
+            dead_player.play('deadPlayer', 12, false, true);
             player.kill();
     }
     
