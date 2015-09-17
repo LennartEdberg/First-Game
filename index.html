@@ -153,8 +153,8 @@ game.time.advancedTiming = true
     coins = game.add.group();
     coins.enableBody = true;
     
-    for (var i = 0; i < 7; i++){
-        var coin = coins.create(i * 150, 0, 'coin');
+    for (var i = 0; i < 80; i++){
+        var coin = coins.create(i * 500, 0, 'coin');
         coin.body.collideWorldBounds = true;
         coin.name = "Coin";
         coin.body.gravity.y = 800;
@@ -178,7 +178,7 @@ game.time.advancedTiming = true
     for (var i = 0; i < 8; i++)
     {
         //  Create a star inside of the 'stars' group
-        var box = boxes.create(300, game.world.height - 144 - i * 82, 'box');
+        var box = boxes.create(i * 100, game.world.height - 144, 'box');
         box.body.collideWorldBounds = true;
         box.anchor.set(0.5);
         //  Let gravity do its thing
@@ -192,8 +192,9 @@ game.time.advancedTiming = true
     // Adds group for boars 
     boars = game.add.group();
     boars.enableBody = true;
-
-    var boar = boars.create(1500, game.world.height - 300, 'boar');
+    
+    for (var i = 0; i < 7; i++){
+        var boar = boars.create(i * 1500, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
@@ -202,6 +203,7 @@ game.time.advancedTiming = true
         boar.maxDistance = 1000;
         boar.minDistance = 500;
         boar.name = "BoarEnemy";
+    }
         boars.forEach(function(boar){   
             boar.animations.add('walk_left', [0, 1, 2, 3, 4], 10, true);
             boar.animations.add('walk_right', [5, 6, 7, 8, 9], 10, true);
