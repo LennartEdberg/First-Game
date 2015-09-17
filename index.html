@@ -33,6 +33,7 @@ function preload() {
     game.load.spritesheet('boar', 'assets/boarsprite.png', 126, 98);
     game.load.spritesheet('dead_boar', 'assets/DeadBoar2.png', 142, 120);
     game.load.spritesheet('dead_barrel', 'assets/DeadBarrel.png', 153, 158);
+    game.load.spritesheet('coin', 'assets/coin.png', 44, 40);
 
 }
 
@@ -40,6 +41,7 @@ var player;
 var platforms;
 var cursors;
 var stars;
+var coins;
 var fpsText;
 var playerName;
 var boars;
@@ -130,26 +132,36 @@ game.time.advancedTiming = true
     player.animations.add('left', [5, 6, 7, 8, 9], 10, true);
     player.animations.add('right', [0, 1, 2, 3, 4], 10, true);
 
-    //  Finally some stars to collect
+    
     stars = game.add.group();
-
-    //  We will enable physics for any star that is created in this group
     stars.enableBody = true;
-
-    //  Here we'll create 12 of them evenly spaced apart
+    
     for (var i = 0; i < 3; i++)
     {
-        //  Create a star inside of the 'stars' group
+       
         var star = stars.create(i * 70, 500, 'star');
         star.body.collideWorldBounds = true;
-        //  Let gravity do its thing
+       
         star.name = "Barrel";
         star.body.gravity.y = 900;
         star.scale.setTo(0.8, 0.8);
-        //  This just gives each star a slightly random bounce value
+
         star.body.bounce.y = 0.5;
         star.health = 50;
     }
+    
+    coins = game.add.group();
+    coins.enableBody = true;
+    
+    for (var i = 0; i < 7; i++){
+        var coin = coins.create(i * 150, 0, 'coin');
+        coin.body.collideWorldBounds = true;
+        coin.name = "Coin";
+        coin.body.gravity.y = 800;
+        coin.scale.setTo(0.8, 0.8);
+        coin.body.bounce.y = 0.7 + Math.random() * 0.2;
+    }
+    
 
     //Lägger till playerName!
     var playerNameStyle = { font: "32px Calibri", fill: "#fff", wordWrap: true, wordWrapWidth: player.width, align: "center" };
@@ -236,6 +248,8 @@ function update() {
     game.physics.arcade.collide(boxes, boxes);
     game.physics.arcade.collide(boxes, player);
     game.physics.arcade.collide(boxes, platforms);
+    game.physics.arcade.collide(platforms, coins);
+    game.physics.arcade.collide(coins, platforms);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
    // game.physics.arcade.overlap(player, stars, null, this);
@@ -285,13 +299,15 @@ function update() {
         fire();
     }
     
-
-    
-game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
-game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
-game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
+ 
+    game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
+    game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
+    game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(boxes, bullets, hitEnemy, null, this);
+    game.physics.arcade.overlap(player, coins, collectCoin, null, this);
+    
 }
+
     
     function fire() {
 
@@ -315,8 +331,13 @@ function render() {
     game.debug.text('FPS:' + game.time.fps || '--', 20, 20, "#ffffff");
     game.debug.text('Score:' + score || '--', 20, 40, "#ffffff");
 
-
 }
+    
+    function collectCoin(player, coin)
+    {
+        score += 5;
+        coin.kill();
+    }
 
     function enemyMove(enemies)
     {
@@ -355,12 +376,13 @@ function render() {
         bullet.kill();
     }
 
-    function hitEnemy(enemy, bullet) {
+    function hitEnemy(enemy, bullet)
+    {
 
         getExplosion(enemy.body.x + 30, enemy.body.y+15);
         bullet.kill();
-
         enemy.damage(10);
+        
         if(enemy.health == 0)
         {
             if(enemy.name === "BoarEnemy")
