@@ -108,11 +108,20 @@ game.time.advancedTiming = true
     ground.body.immovable = true;
 
 
-    //  Now let's create two ledges
-    var ledge = platforms.create(1200, game.world.height - 400, 'platform');
+    //  Creating ledges
+    var ledge = platforms.create(1200, game.world.height - 600, 'platform');
     ledge.body.immovable = true;
 
-    ledge = platforms.create(600, game.world.height - 500, 'platform');
+    ledge = platforms.create(600, game.world.height - 600, 'platform');
+    ledge.body.immovable = true; 
+    
+    ledge = platforms.create(2300, game.world.height - 800, 'platform');
+    ledge.body.immovable = true;
+    
+    ledge = platforms.create(3000, game.world.height - 500, 'platform');
+    ledge.body.immovable = true;  
+    
+    ledge = platforms.create(2600, game.world.height - 500, 'platform');
     ledge.body.immovable = true;
 
 
@@ -246,7 +255,6 @@ function update() {
     game.physics.arcade.collide(boars, platforms);
     game.physics.arcade.collide(boars, boars);
     game.physics.arcade.collide(boars, stars);
-    game.physics.arcade.collide(player, boars);
     game.physics.arcade.collide(boxes, boxes);
     game.physics.arcade.collide(boxes, player);
     game.physics.arcade.collide(boxes, platforms);
@@ -307,7 +315,7 @@ function update() {
     game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(boxes, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(player, coins, collectCoin, null, this);
-    
+    game.physics.arcade.overlap(player, boars, killPlayer, null, this);
 }
 
     
@@ -334,6 +342,10 @@ function render() {
     game.debug.text('Score:' + score || '--', 20, 40, "#ffffff");
 
 }
+    
+    function killPlayer(player, boar){
+            player.kill();
+    }
     
     function collectCoin(player, coin)
     {
