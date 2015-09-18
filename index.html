@@ -35,10 +35,12 @@ function preload() {
     game.load.spritesheet('dead_barrel', 'assets/DeadBarrel.png', 153, 158);
     game.load.spritesheet('coin', 'assets/coin.png', 44, 40);
     game.load.spritesheet('deadPlayer', 'assets/deadPlayer.png', 79, 106);
+    game.load.spritesheet('jump', 'assets/jumpSprite.png', 80, 106);
 
 }
 
 var player;
+var jump;
 var platforms;
 var cursors;
 var stars;
@@ -295,7 +297,6 @@ function update() {
 
     if (cursors.left.isDown)
     {
-        //  Move to the left
         facing = 'left';
         player.body.velocity.x = -350;
         player.animations.play('left');
@@ -322,10 +323,17 @@ function update() {
         player.frame = 9;
     }
 
-    //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown)
+    // Fixade animation för jump, beroende på vilket håll man kollade.
+    if (facing === 'right' && cursors.up.isDown)
     {
         player.body.velocity.y = -350;
+        player.frame = 3;
+    }
+    
+    if (facing === 'left' && cursors.up.isDown)
+    {
+        player.body.velocity.y = -350;
+        player.frame = 8;
     }
 
     //PlayerName
