@@ -216,14 +216,14 @@ game.time.advancedTiming = true
     boars.enableBody = true;
     
     for (var i = 0; i < 4; i++){
-        var boar = boars.create(i * 1500, game.world.height - 300, 'boar');
+        var boar = boars.create(i * 1200, game.world.height - 400, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
         boar.health = 100;
         boar.velocity = 100;
-        boar.maxDistance = 1000;
-        boar.minDistance = 500;
+        boar.maxDistance = 1000 + i * 50;
+        boar.minDistance = 500 + i * 25;
         boar.name = "BoarEnemy";
     }
     
@@ -234,8 +234,8 @@ game.time.advancedTiming = true
         boar.body.bounce.y = 0.2;
         boar.health = 100;
         boar.velocity = 100;
-        boar.maxDistance = 1000;
-        boar.minDistance = 500;
+        boar.maxDistance = 1000 + j * 100;
+        boar.minDistance = 500 + j * 50;
         boar.name = "BoarEnemy";
     }
         boars.forEach(function(boar){   
@@ -310,7 +310,8 @@ function update() {
     {
         //  Stand still
         player.animations.stop();
-        player.frame = 4;
+
+        //För att detta ska funka måste du kolla om player är facing left/right o ge han rätt frame, annars vänder han alltid sig höger även fast han gick vänster t.ex.
     }
 
 
