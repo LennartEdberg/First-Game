@@ -35,12 +35,10 @@ function preload() {
     game.load.spritesheet('dead_barrel', 'assets/DeadBarrel.png', 153, 158);
     game.load.spritesheet('coin', 'assets/coin.png', 44, 40);
     game.load.spritesheet('deadPlayer', 'assets/deadPlayer.png', 79, 106);
-    game.load.spritesheet('jump', 'assets/jumpSprite.png', 80, 106);
 
 }
 
 var player;
-var jump;
 var platforms;
 var cursors;
 var stars;
@@ -348,8 +346,7 @@ function update() {
     {
         fire();
     }
-    
- 
+
     game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
     game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
