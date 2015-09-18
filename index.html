@@ -57,6 +57,7 @@ var timer;
 var milliseconds = 0;
 var seconds = 0;
 var minutes = 0;
+var facing;
 
 
 
@@ -295,26 +296,31 @@ function update() {
     if (cursors.left.isDown)
     {
         //  Move to the left
+        facing = 'left';
         player.body.velocity.x = -350;
         player.animations.play('left');
     }
     else if (cursors.right.isDown)
     {
-        //  Move to the right
+        facing = 'right';
         player.body.velocity.x = 350;
-
         player.animations.play('right');
-
     }
     else
     {
-        //  Stand still
         player.animations.stop();
-
-        //För att detta ska funka måste du kolla om player är facing left/right o ge han rätt frame, annars vänder han alltid sig höger även fast han gick vänster t.ex.
     }
 
-
+    // Fixade animation för stop, bereonde på vilket håll man gick åt.
+    if (facing === 'right' && cursors.right.isDown === false){
+        player.animations.stop();
+        player.frame = 4;
+    }
+    
+    if (facing === 'left' && cursors.left.isDown === false){
+        player.animations.stop();
+        player.frame = 9;
+    }
 
     //  Allow the player to jump if they are touching the ground.
     if (cursors.up.isDown)
