@@ -52,6 +52,12 @@ var sprite;
 var fireRate = 300;
 var nextFire = 0;
 var score = 0;
+var textStyle = { font: '64px Desyrel', align: 'center'};
+var timer;
+var milliseconds = 0;
+var seconds = 0;
+var minutes = 0;
+
 
 
 function create() {
@@ -140,6 +146,7 @@ game.time.advancedTiming = true
     player.body.gravity.y = 1000;
     player.body.collideWorldBounds = true;
     player.anchor.set(0.5);
+    player.health = 100;
     player.body.allowRotation = false;
     //  Our two animations, walking left and right.
     player.animations.add('left', [5, 6, 7, 8, 9], 10, true);
@@ -187,6 +194,8 @@ game.time.advancedTiming = true
     //Add boxes!
     boxes = game.add.group();
     boxes.enableBody = true;
+
+
 
     for (var i = 0; i < 8; i++)
     {
@@ -331,7 +340,7 @@ function update() {
     game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(boxes, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(player, coins, collectCoin, null, this);
-    game.physics.arcade.overlap(player, boars, killPlayer, null, this);
+    game.physics.arcade.overlap(player, boars, DamagePlayer, null, this);
 }
 
     
@@ -356,18 +365,14 @@ function render() {
 
     game.debug.text('FPS:' + game.time.fps || '--', 20, 20, "#ffffff");
     game.debug.text('Score:' + score || '--', 20, 40, "#ffffff");
+    timer = game.debug.text(minutes + ':' + seconds + ':' + milliseconds, 20, 60, textStyle);
 
 }
     
-    function killPlayer(player, boar)
+    function DamagePlayer(player, enemy)
     {
-            var dead_player = this.game.add.sprite(0, 0, 'deadPlayer');
-            dead_player.scale.setTo(1.2, 1.2);
-            var animation = dead_player.animations.add('deadPlayer', [0,1,2,3], 12, false);
-            animation.killOnComplete = true;
-            dead_player.reset(player.body.x, player.body.y);
-            dead_player.play('deadPlayer', 12, false, true);
-            player.kill();
+       player.damage(10);
+        console.log(player.health);
     }
     
     function collectCoin(player, coin)
@@ -448,6 +453,27 @@ function render() {
         console.log(enemy.health);
         console.log(enemy.name);
 
+    }
+
+function updateTimer() {
+
+minutes = Math.floor(game.time.time / 60000) % 60;
+
+seconds = Math.floor(game.time.time / 1000) % 60;
+
+milliseconds = Math.floor(game.time.time) % 100;
+
+//If any of the digits becomes a single digit number, pad it with a zero
+if (milliseconds < 10)
+milliseconds = '0' + milliseconds;
+
+if (seconds < 10)
+seconds = '0' + seconds;
+
+if (minutes < 10)
+minutes = '0' + minutes;
+
+timer.setText(minutes + ':'+ seconds + ':' + milliseconds);
     }
 
 </script>
