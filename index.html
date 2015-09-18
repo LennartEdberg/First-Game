@@ -35,7 +35,6 @@ function preload() {
     game.load.spritesheet('dead_barrel', 'assets/DeadBarrel.png', 153, 158);
     game.load.spritesheet('coin', 'assets/coin.png', 44, 40);
     game.load.spritesheet('deadPlayer', 'assets/deadPlayer.png', 79, 106);
-
 }
 
 var player;
@@ -58,8 +57,6 @@ var milliseconds = 0;
 var seconds = 0;
 var minutes = 0;
 var facing;
-
-
 
 function create() {
 
@@ -117,11 +114,8 @@ game.time.advancedTiming = true
 
 
     //  Creating ledges
-    var ledge = platforms.create(1200, game.world.height - 600, 'platform');
+    var ledge = platforms.create(1200, game.world.height - 500, 'platform');
     ledge.body.immovable = true;
-
-    ledge = platforms.create(600, game.world.height - 600, 'platform');
-    ledge.body.immovable = true; 
     
     ledge = platforms.create(2300, game.world.height - 800, 'platform');
     ledge.body.immovable = true;
@@ -200,15 +194,12 @@ game.time.advancedTiming = true
 
     for (var i = 0; i < 8; i++)
     {
-        //  Create a star inside of the 'stars' group
-        var box = boxes.create(i * 100, game.world.height - 144, 'box');
+        var box = boxes.create(1000, game.world.height - 144, 'box');
         box.body.collideWorldBounds = true;
         box.anchor.set(0.5);
-        //  Let gravity do its thing
         box.name = "Box";
         box.body.moves = false;
         box.body.gravity.y = 90;
-        //  This just gives each star a slightly random bounce value
         box.health = 50;
     }
 
@@ -217,7 +208,7 @@ game.time.advancedTiming = true
     boars.enableBody = true;
     
     for (var i = 0; i < 4; i++){
-        var boar = boars.create(i * 1200, game.world.height - 400, 'boar');
+        var boar = boars.create(i * 1200, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
@@ -268,7 +259,6 @@ game.time.advancedTiming = true
 }
     
 
-
  
     
 function update() {
@@ -283,6 +273,7 @@ function update() {
     game.physics.arcade.collide(boxes, boxes);
     game.physics.arcade.collide(boxes, player);
     game.physics.arcade.collide(boxes, platforms);
+    game.physics.arcade.collide(boxes, boars);
     game.physics.arcade.collide(platforms, coins);
     game.physics.arcade.collide(coins, platforms);
 
@@ -342,8 +333,15 @@ function update() {
     
    sprite.rotation = game.physics.arcade.angleToPointer(sprite);
 
-    if (game.input.activePointer.isDown)
+    if (game.input.activePointer.isDown && facing === 'right')
     {
+        player.frame = 1;
+        fire();
+    }
+    
+    if (game.input.activePointer.isDown && facing === 'left')
+    {
+        player.frame = 6;
         fire();
     }
 
@@ -487,6 +485,7 @@ minutes = '0' + minutes;
 
 timer.setText(minutes + ':'+ seconds + ':' + milliseconds);
     }
+    
 
 </script>
 
