@@ -27,6 +27,7 @@ function preload() {
     game.load.image('platform', 'assets/platform.png');
     game.load.image('star', 'assets/barrel.png');
     game.load.image('box', 'assets/WoodenBox.png');
+    game.load.image('FrogBoss', 'assets/GrodBoss.png');
     game.load.spritesheet('bullet', 'assets/FireballSprite.png', 124, 43);
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
@@ -38,6 +39,7 @@ function preload() {
 }
 
 var player;
+var FrogBoss;
 var platforms;
 var cursors;
 var stars;
@@ -51,7 +53,6 @@ var sprite;
 var fireRate = 300;
 var nextFire = 0;
 var score = 0;
-var textStyle = { font: '64px Desyrel', align: 'center'};
 var timer;
 var milliseconds = 0;
 var seconds = 0;
@@ -138,7 +139,7 @@ game.time.advancedTiming = true
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.body.bounce.y = 0.2;
-    player.body.gravity.y = 1000;
+    player.body.gravity.y = 500;
     player.body.collideWorldBounds = true;
     player.anchor.set(0.5);
     player.health = 100;
@@ -148,6 +149,18 @@ game.time.advancedTiming = true
     player.animations.add('right', [0, 1, 2, 3, 4], 10, true);
 
     
+    //GRODBOSS
+    var bosses = game.add.group();
+    bosses.enableBody = true;
+
+     var FrogBoss = bosses.create(width*3 - 220, game.world.height - 220, 'FrogBoss');
+
+    game.physics.arcade.enable(FrogBoss);
+    FrogBoss.moves = false;
+    FrogBoss.body.collideWorldBounds = true;
+    FrogBoss.anchor.set(0.5);
+    FrogBoss.health = 600;
+
     stars = game.add.group();
     stars.enableBody = true;
     
@@ -168,8 +181,8 @@ game.time.advancedTiming = true
     coins = game.add.group();
     coins.enableBody = true;
     
-    for (var i = 0; i < 80; i++){
-        var coin = coins.create(i * 500, 0, 'coin');
+    for (var i = 0; i < 15; i++){
+        var coin = coins.create(i * 450, 0, 'coin');
         coin.body.collideWorldBounds = true;
         coin.name = "Coin";
         coin.body.gravity.y = 800;
@@ -192,9 +205,9 @@ game.time.advancedTiming = true
 
 
 
-    for (var i = 0; i < 8; i++)
+    for (var i = 0; i < 2; i++)
     {
-        var box = boxes.create(1000, game.world.height - 144, 'box');
+        var box = boxes.create(1000, game.world.height - 144 + i * 82, 'box');
         box.body.collideWorldBounds = true;
         box.anchor.set(0.5);
         box.name = "Box";
@@ -313,15 +326,15 @@ function update() {
     }
 
     // Fixade animation för jump, beroende på vilket håll man kollade.
-    if (facing === 'right' && cursors.up.isDown)
+    if (facing === 'right' && cursors.up.isDown && player.body.touching.down)
     {
-        player.body.velocity.y = -350;
+        player.body.velocity.y = -450;
         player.frame = 3;
     }
     
-    if (facing === 'left' && cursors.up.isDown)
+    if (facing === 'left' && cursors.up.isDown && player.body.touching.down)
     {
-        player.body.velocity.y = -350;
+        player.body.velocity.y = -450;
         player.frame = 8;
     }
 
@@ -375,7 +388,7 @@ function render() {
 
     game.debug.text('FPS:' + game.time.fps || '--', 20, 20, "#ffffff");
     game.debug.text('Score:' + score || '--', 20, 40, "#ffffff");
-    timer = game.debug.text(minutes + ':' + seconds + ':' + milliseconds, 20, 60, textStyle);
+    timer = game.debug.text(minutes + ':' + seconds + ':' + milliseconds, 20, 60);
 
 }
     
