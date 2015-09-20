@@ -403,10 +403,17 @@ bossbullets.forEach(function(bossbullet)
                 game.physics.arcade.accelerateToObject(bossbullet, player, 175, 150, 150);
             }, game.physics);
     }
+    
+    
     label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + score + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
     label.anchor.setTo(0.5, 0.5);
     label.visible = false;
     label.fixedToCamera = true;
+    
+    labelWin = game.add.text(game.camera.width / 2, game.camera.height / 2, 'You WIN!\n Score: ' + score + '\n click mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+    labelWin.anchor.setTo(0.5, 0.5);
+    labelWin.visible = false;
+    labelWin.fixedToCamera = true;
 
     game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
@@ -463,10 +470,11 @@ function render() {
 
         player.damage(10);
         console.log(player.health);
+        
         if(player.health == 0)
         {
-        label.visible = true;
-        game.input.onTap.addOnce(restart);
+            label.visible = true;
+            game.input.onTap.addOnce(restart);
         }
 
     }
@@ -582,6 +590,11 @@ function render() {
         }
         console.log(enemy.health);
         console.log(enemy.name);
+        
+        if(FrogBoss.health == 0){
+            labelWin.visible = true;
+            game.input.onTap.addOnce(restart);
+        }
 
     }
 
