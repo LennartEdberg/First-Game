@@ -64,7 +64,7 @@ var EventTimer;
 var ScoreTimer;
 var ScoreMinus = 0;
 var bubbles;
-var wasd;
+var totalScore = 0;
 
 
 
@@ -198,13 +198,6 @@ game.time.advancedTiming = true
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
 
-            wasd = {
-                up: game.input.keyboard.addKey(Phaser.Keyboard.W),
-                down: game.input.keyboard.addKey(Phaser.Keyboard.S),
-                left: game.input.keyboard.addKey(Phaser.Keyboard.A),
-                right: game.input.keyboard.addKey(Phaser.Keyboard.D),
-            };
-
     game.camera.follow(player);
     
     //Add boxes!
@@ -288,7 +281,7 @@ game.time.advancedTiming = true
 
     sprite.body.allowRotation = false;
     EventTimer = game.time.create(false);
-    EventTimer.loop(5000, fire, this);
+    EventTimer.loop(5000, BubbleSpawn, this);
 
     ScoreTimer = game.time.create(false);
     ScoreTimer.loop(1000, updateScoreTime, this);
@@ -314,6 +307,8 @@ function update() {
     game.physics.arcade.collide(platforms, coins);
     game.physics.arcade.collide(coins, platforms);
     game.physics.arcade.collide(player, FrogBoss);
+
+    totalScore = score - ScoreMinus;
 
      enemyMove(boars);
 
@@ -402,12 +397,12 @@ function update() {
     }
     
     
-    label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + score + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+    label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + totalScore + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
     label.anchor.setTo(0.5, 0.5);
     label.visible = false;
     label.fixedToCamera = true;
     
-    labelWin = game.add.text(game.camera.width / 2, game.camera.height / 2, 'You WIN!\n Score: ' + score + '\n click mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+    labelWin = game.add.text(game.camera.width / 2, game.camera.height / 2, 'You WIN!\n Score: ' + totalScore + '\n click mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
     labelWin.anchor.setTo(0.5, 0.5);
     labelWin.visible = false;
     labelWin.fixedToCamera = true;
@@ -426,7 +421,7 @@ function update() {
     function updateScoreTime()
     {
         ScoreMinus = ScoreMinus + 0.5;
-        console.log(ScoreMinus);
+
     }
 
     function fire() {
@@ -456,7 +451,7 @@ function update() {
         var bossbullet = bossbullets.getFirstDead();
         bossbullet.reset(FrogBoss.x - 120, FrogBoss.y - 50);
         bossbullet.lifespan = 7000;
-        console.log("Fired");
+
     }
 
 }
@@ -472,7 +467,6 @@ function render() {
     {
 
         player.damage(10);
-        console.log(player.health);
         
         if(player.health == 0)
         {
@@ -487,7 +481,6 @@ function render() {
 
         player.damage(10);
         enemy.kill();
-        console.log(player.health);
         if(player.health == 0)
         {
         label.visible = true;
@@ -592,8 +585,6 @@ function render() {
             {
             }
         }
-        console.log(enemy.health);
-        console.log(enemy.name);
         
         if(FrogBoss.health == 0){
             labelWin.visible = true;
