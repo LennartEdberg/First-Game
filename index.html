@@ -27,7 +27,7 @@ function preload() {
     game.load.image('platform', 'assets/platform.png');
     game.load.image('star', 'assets/barrel.png');
     game.load.image('box', 'assets/WoodenBox.png');
-    game.load.image('FrogBoss', 'assets/GrodBoss.png');
+    game.load.image('frogboss', 'assets/GrodBoss.png');
     game.load.image('FrogBossProjectile', 'assets/FrogBossProjectile.png');
     game.load.image('FrogBossBubble', 'assets/FrogBossBubble.png');
     game.load.spritesheet('bullet', 'assets/FireballSprite.png', 124, 43);
@@ -150,13 +150,13 @@ game.time.advancedTiming = true
     var bosses = game.add.group();
     bosses.enableBody = true;
 
-     var FrogBoss = bosses.create(width*3 - 220, game.world.height - 220, 'FrogBoss');
+    var FrogBoss = bosses.create(width*3 - 220, game.world.height - 220, 'frogboss');
 
     game.physics.arcade.enable(FrogBoss);
-    FrogBoss.moves = false;
+    FrogBoss.body.immovable = true;
     FrogBoss.anchor.set(0.5);
     FrogBoss.health = 600;
-
+    FrogBoss.collideWorldBounds = true;
     stars = game.add.group();
     stars.enableBody = true;
     
@@ -404,6 +404,7 @@ function update() {
         bullet.rotation = game.physics.arcade.angleToPointer(player);
         game.physics.arcade.moveToPointer(bullet, 500);
         bullet.play('Fireball', 20, true, false);
+
     }
 
 }
