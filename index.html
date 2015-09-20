@@ -209,6 +209,28 @@ game.time.advancedTiming = true
         box.health = 50;
     }
 
+    // First boxes
+    var box = boxes.create(1100, game.world.height - 320, 'box');
+    box.body.immovable = true;
+    
+    box = boxes.create(1150, game.world.height - 400, 'box');
+    box.body.immovable = true;
+    
+    // Second boxes
+    box = boxes.create(2500, game.world.height - 320, 'box');
+    box.body.immovable = true;
+    
+    box = boxes.create(3500, game.world.height - 320, 'box');
+    box.body.immovable = true;
+    
+    box = boxes.create(3450, game.world.height - 400, 'box');
+    box.body.immovable = true;
+    
+    box = boxes.create(4000, game.world.height - 320, 'box');
+    box.body.immovable = true;
+    
+    
+   
     // Adds group for boars 
     boars = game.add.group();
     boars.enableBody = true;
