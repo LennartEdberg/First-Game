@@ -193,7 +193,7 @@ game.time.advancedTiming = true
         coin.name = "Coin";
         coin.body.gravity.y = 800;
         coin.scale.setTo(0.8, 0.8);
-        coin.body.bounce.y = 0.7 + Math.random() * 0.2;
+        coin.body.bounce.y = 0.3 + Math.random() * 0.2;
     }
 
 
@@ -401,19 +401,19 @@ function update() {
     }
     
     
-    infolabel = game.add.text(200, 300, 'Use the arrow-keys to move around!',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
-    infolabel2 = game.add.text(300, 500, 'Shoot fireballs with Mouse1!',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
-
-
-    label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + totalScore + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
-    label.anchor.setTo(0.5, 0.5);
-    label.visible = false;
-    label.fixedToCamera = true;
-    
-    labelWin = game.add.text(game.camera.width / 2, game.camera.height / 2, 'You WIN!\n Score: ' + totalScore + '\n click mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
-    labelWin.anchor.setTo(0.5, 0.5);
-    labelWin.visible = false;
-    labelWin.fixedToCamera = true;
+//    infolabel = game.add.text(200, 300, 'Use the arrow-keys to move around!',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+//    infolabel2 = game.add.text(300, 500, 'Shoot fireballs with Mouse1!',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+//
+//
+//    label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + totalScore + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+//    label.anchor.setTo(0.5, 0.5);
+//    label.visible = false;
+//    label.fixedToCamera = true;
+//    
+//    labelWin = game.add.text(game.camera.width / 2, game.camera.height / 2, 'You WIN!\n Score: ' + totalScore + '\n click mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+//    labelWin.anchor.setTo(0.5, 0.5);
+//    labelWin.visible = false;
+//    labelWin.fixedToCamera = true;
 
     game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
@@ -512,6 +512,7 @@ function render() {
     }
 
     function restart(){
+        game.time.events.remove(Loop);
         location.reload();
     }
     
