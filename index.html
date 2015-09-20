@@ -252,7 +252,7 @@ game.time.advancedTiming = true
     bossbullets = game.add.group();
     bossbullets.enableBody = true;
     bossbullets.physicsBodyType = Phaser.Physics.ARCADE;
-    bossbullets.createMultiple(2, 'FrogBossProjectile');
+    bossbullets.createMultiple(30, 'FrogBossProjectile');
     bossbullets.setAll('checkWorldBounds', true);
     bossbullets.setAll('outOfBoundsKill', true);
 
@@ -364,7 +364,7 @@ function update() {
     game.physics.arcade.overlap(boxes, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(player, coins, collectCoin, null, this);
     game.physics.arcade.overlap(player, boars, DamagePlayer, null, this);
-    //game.physics.arcade.overlap(player, bossbullets, DamagePlayer, null, this);
+    game.physics.arcade.overlap(player, bossbullets, DamagePlayer, null, this);
     game.physics.arcade.overlap(FrogBoss, bullets, hitEnemy, null, this);
 }
 
@@ -390,11 +390,11 @@ function update() {
 
     if (game.time.now > bossnextFire && bossbullets.countDead() > 0)
     {
-        nextFire = game.time.now + BossfireRate;
+        bossnextFire = game.time.now + BossfireRate;
         var bossbullet = bossbullets.getFirstDead();
-        bossbullet.reset(player.x, player.y+7);
-        bossbullet.lifespan = 2000;
-        game.physics.arcade.moveToPointer(bossbullet, 500);
+        bossbullet.reset(FrogBoss.x, FrogBoss.y+7);
+        bossbullet.lifespan = 1300;
+        game.physics.moveToObject(bossbullet, player, 600);
         console.log("Fired");
     }
 
