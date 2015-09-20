@@ -233,7 +233,7 @@ game.time.advancedTiming = true
     boars.enableBody = true;
 
     for (var i = 0; i < 3; i++){
-        var boar = boars.create(1700 + i * 200, game.world.height - 300, 'boar');
+        var boar = boars.create(1700 + i * 500, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
@@ -245,7 +245,7 @@ game.time.advancedTiming = true
     }
     
     for (var j = 0; j < 3; j++){
-        var boar = boars.create(2000 + j * 200, game.world.height - 300, 'boar');
+        var boar = boars.create(3200 + j * 700, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
