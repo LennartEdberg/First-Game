@@ -330,6 +330,9 @@ function update() {
     bmpText2.text = 'You won! \n Score:' + totalScore + '\n Click to restart';
     bmpText2.visible = false;
     
+    bmpText3 = game.add.bitmapText(150, 250, 'font', 'Too move use the arrow-keys!', 64);
+    bmpText4 = game.add.bitmapText(150, 470, 'font', 'Shoot fireballs with mouse1!', 64);
+
     if(player.x > 3900)
     {
         EventTimer.start();
