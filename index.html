@@ -433,8 +433,11 @@ function render() {
 
         player.damage(10);
         console.log(player.health);
-        label.visible = true;
-        game.input.onTap.addOnce(restart);
+        
+        if(player.health === 0){
+            label.visible = true;
+            game.input.onTap.addOnce(restart);
+        }
 
     }
 
