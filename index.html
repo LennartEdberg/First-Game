@@ -47,8 +47,8 @@ var cursors;
 var stars;
 var coins;
 var fpsText;
-var playerName;
 var boars;
+var bosses;
 var explosions;
 var bullets;
 var sprite;
@@ -187,10 +187,7 @@ game.time.advancedTiming = true
     }
     
 
-    //Lägger till playerName!
-    var playerNameStyle = { font: "32px Calibri", fill: "#fff", wordWrap: true, wordWrapWidth: player.width, align: "center" };
-    playerName = game.add.text(0, 0, "Hassan", playerNameStyle);
-    playerName.anchor.set(0.5);
+
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
     game.camera.follow(player);
@@ -338,11 +335,6 @@ function update() {
         player.frame = 8;
     }
 
-    //PlayerName
-    playerName.x = Math.floor(player.x);
-    playerName.y = Math.floor(player.y - player.height/2 - player.height/5);
-
-    //fps = game.time.fps;
     
    sprite.rotation = game.physics.arcade.angleToPointer(sprite);
 
