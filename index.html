@@ -320,12 +320,12 @@ function update() {
      enemyMove(boars);
 
     
-    bmpText = game.add.bitmapText(game.camera.width / 2 - 180, game.camera.height / 2 - 180, 'font', 'You won! \n Score: ' + totalScore + '\n Click to restart', 64);
+    bmpText = game.add.bitmapText(game.camera.width / 2 - 180, game.camera.height / 2 - 180, 'font', 'Game Over! \n Score: ' + totalScore + '\n Click to restart', 64);
     bmpText.fixedToCamera = true;
     bmpText.text = 'GAME OVER \n Score:' + totalScore + '\n Click to restart';
     bmpText.visible = false;
     
-    bmpText2 = game.add.bitmapText(game.camera.width / 2, game.camera.height / 2, 'font', 'You won! \n Score: ' + totalScore + '\n Click to restart', 64);
+    bmpText2 = game.add.bitmapText(game.camera.width / 2 - 180, game.camera.height / 2 - 180, 'font', 'You won! \n Score: ' + totalScore + '\n Click to restart', 64);
     bmpText2.fixedToCamera = true;
     bmpText2.text = 'You won! \n Score:' + totalScore + '\n Click to restart';
     bmpText2.visible = false;
