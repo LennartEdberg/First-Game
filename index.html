@@ -55,12 +55,13 @@ var bullets;
 var sprite;
 var textStyle = { font: '64px Arial', align: 'center'};
 var fireRate = 350;
-var BossfireRate = 230;
+var BossfireRate = 500;
 var nextFire = 0;
 var bossnextFire = 0;
 var score = 0;
 var facing;
 var EventTimer;
+var bubbles;
 
 
 
@@ -286,7 +287,7 @@ game.time.advancedTiming = true
     sprite.body.allowRotation = false;
     timer = game.add.text(250, 250, '00:00:00', textStyle);
     EventTimer = game.time.create(false);
-    EventTimer.loop(5000, fire, this);
+    EventTimer.loop(5000, BubbleSpawn, this);
 
      this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
@@ -397,9 +398,9 @@ function update() {
 
     if(bossbullets.length > 0)
     {
-bossbullets.forEach(function(bossbullets)
+bossbullets.forEach(function(bossbullet)
             {
-                game.physics.arcade.accelerateToObject(bossbullets, player, 175, 150, 150);
+                game.physics.arcade.accelerateToObject(bossbullet, player, 175, 150, 150);
             }, game.physics);
     }
     label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + score + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
@@ -524,6 +525,22 @@ function render() {
 
     }
 
+    function BubbleSpawn(){
+
+        bubbles = game.add.group();
+        bubbles.physicsBodyType = Phaser.Physics.ARCADE;
+        bubbles.setAll('checkWorldBounds', true);
+        bubbles.setAll('outOfBoundsKill', true);
+
+        for(var i = 0; i < 5; i++)
+        {
+            var bubble = bubbles.create(5400, game.world.height - 130, 'FrogBossBubble');
+            bubble.enableBody = true;
+            bubble.body.velocity.y = -200;
+
+        }
+
+    }
 
     function hitObstacle(obstacle, bullet)
     {
