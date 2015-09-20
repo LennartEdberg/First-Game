@@ -149,12 +149,14 @@ game.time.advancedTiming = true
     //GRODBOSS
     bosses = game.add.group();
     bosses.enableBody = true;
-
-    var FrogBoss = bosses.create(width*3 - 220, game.world.height - 220, 'frogboss');
+    
+    game.physics.arcade.enable(bosses);
+    
+    FrogBoss = bosses.create(5500, game.world.height - 220, 'frogboss');
     FrogBoss.body.immovable = true;
+    FrogBoss.body.collideWorldBounds = true;
     FrogBoss.anchor.set(0.5);
     FrogBoss.health = 600;
-    FrogBoss.collideWorldBounds = true;
     
     
     stars = game.add.group();
@@ -306,6 +308,7 @@ function update() {
     game.physics.arcade.collide(platforms, coins);
     game.physics.arcade.collide(coins, platforms);
     game.physics.arcade.collide(player, FrogBoss);
+    
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
      enemyMove(boars);
