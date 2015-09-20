@@ -307,6 +307,7 @@ function update() {
     game.physics.arcade.collide(platforms, coins);
     game.physics.arcade.collide(coins, platforms);
     game.physics.arcade.collide(player, FrogBoss);
+    game.physics.arcade.collide(bubbles, platforms);
 
     totalScore = score - ScoreMinus;
 
@@ -550,12 +551,13 @@ function render() {
 
         for(var i = 0; i < 5; i++)
         {
-            var bubble = bubbles.create(5000 + i * 150, game.world.height - 1200, 'FrogBossBubble');
+            var bubble = bubbles.create(4500 + i * 150, game.world.height - 1200, 'FrogBossBubble');
             bubble.body.collideWorldBounds = true;
             bubble.body.gravity.y = 800;
             bubble.scale.setTo(0.8, 0.8);
-            bubble.body.bounce.y = 0.7 + Math.random() * 0.2;
+            bubble.body.bounce.y = 0.4 + Math.random() * 0.2;
             bubble.body.velocity.y = -200;
+            bubble.lifespan = 3500;
 
         }
 
