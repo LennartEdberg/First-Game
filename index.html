@@ -28,6 +28,8 @@ function preload() {
     game.load.image('star', 'assets/barrel.png');
     game.load.image('box', 'assets/WoodenBox.png');
     game.load.image('FrogBoss', 'assets/GrodBoss.png');
+    game.load.image('FrogBossProjectile', 'assets/FrogBossProjectile.png');
+    game.load.image('FrogBossBubble', 'assets/FrogBossBubble.png');
     game.load.spritesheet('bullet', 'assets/FireballSprite.png', 124, 43);
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
@@ -51,7 +53,9 @@ var explosions;
 var bullets;
 var sprite;
 var fireRate = 300;
+var BossfireRate = 100;
 var nextFire = 0;
+var bossnextFire = 0;
 var score = 0;
 var timer;
 var milliseconds = 0;
@@ -77,13 +81,6 @@ game.time.advancedTiming = true
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    bullets = game.add.group();
-    bullets.enableBody = true;
-    bullets.physicsBodyType = Phaser.Physics.ARCADE;
-
-    bullets.createMultiple(30, 'bullet');
-    bullets.setAll('anchor.x', 0.5);
-    bullets.setAll('anchor.y', 0.5);
 
     //  An explosion pool
     explosions = game.add.group();
@@ -157,7 +154,6 @@ game.time.advancedTiming = true
 
     game.physics.arcade.enable(FrogBoss);
     FrogBoss.moves = false;
-    FrogBoss.body.collideWorldBounds = true;
     FrogBoss.anchor.set(0.5);
     FrogBoss.health = 600;
 
@@ -167,7 +163,7 @@ game.time.advancedTiming = true
     for (var i = 0; i < 3; i++)
     {
        
-        var star = stars.create(i * 70, 500, 'star');
+        var star = stars.create(1500 + i * 100, 300, 'star');
         star.body.collideWorldBounds = true;
        
         star.name = "Barrel";
@@ -207,7 +203,7 @@ game.time.advancedTiming = true
 
     for (var i = 0; i < 2; i++)
     {
-        var box = boxes.create(1000, game.world.height - 144 + i * 82, 'box');
+        var box = boxes.create(600 + i *200, game.world.height - 300 - i * 202, 'box');
         box.body.collideWorldBounds = true;
         box.anchor.set(0.5);
         box.name = "Box";
@@ -256,17 +252,20 @@ game.time.advancedTiming = true
     bullets.setAll('checkWorldBounds', true);
     bullets.setAll('outOfBoundsKill', true);
     
+    bossbullets = game.add.group();
+    bossbullets.enableBody = true;
+    bossbullets.physicsBodyType = Phaser.Physics.ARCADE;
+    bossbullets.createMultiple(2, 'FrogBossProjectile');
+    bossbullets.setAll('checkWorldBounds', true);
+    bossbullets.setAll('outOfBoundsKill', true);
+
     sprite = game.add.sprite(0, 0);
     sprite.anchor.set(0.5);
 
     game.physics.enable(sprite, Phaser.Physics.ARCADE);
 
     sprite.body.allowRotation = false;
-    
-    if (game.input.activePointer.isDown)
-    {
-        fire();
-    }
+
 
 
 }
@@ -289,6 +288,7 @@ function update() {
     game.physics.arcade.collide(boxes, boars);
     game.physics.arcade.collide(platforms, coins);
     game.physics.arcade.collide(coins, platforms);
+    game.physics.arcade.collide(player, FrogBoss);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
    // game.physics.arcade.overlap(player, stars, null, this);
@@ -350,12 +350,14 @@ function update() {
     {
         player.frame = 1;
         fire();
+        Bossfire();
     }
     
     if (game.input.activePointer.isDown && facing === 'left')
     {
         player.frame = 6;
         fire();
+        Bossfire();
     }
 
     game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
@@ -364,6 +366,8 @@ function update() {
     game.physics.arcade.overlap(boxes, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(player, coins, collectCoin, null, this);
     game.physics.arcade.overlap(player, boars, DamagePlayer, null, this);
+    //game.physics.arcade.overlap(player, bossbullets, DamagePlayer, null, this);
+    game.physics.arcade.overlap(FrogBoss, bullets, hitEnemy, null, this);
 }
 
     
@@ -384,6 +388,20 @@ function update() {
 
 }
 
+    function Bossfire() {
+
+    if (game.time.now > bossnextFire && bossbullets.countDead() > 0)
+    {
+        nextFire = game.time.now + BossfireRate;
+        var bossbullet = bossbullets.getFirstDead();
+        bossbullet.reset(player.x, player.y+7);
+        bossbullet.lifespan = 2000;
+        game.physics.arcade.moveToPointer(bossbullet, 500);
+        console.log("Fired");
+    }
+
+}
+
 function render() {
 
     game.debug.text('FPS:' + game.time.fps || '--', 20, 20, "#ffffff");
@@ -394,6 +412,7 @@ function render() {
     
     function DamagePlayer(player, enemy)
     {
+
        player.damage(10);
         console.log(player.health);
     }
