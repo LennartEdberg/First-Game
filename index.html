@@ -301,7 +301,6 @@ game.time.advancedTiming = true
     
 function update() {
 
-    //  Collide the player and the stars with the platforms
     game.physics.arcade.collide(player, platforms);
     game.physics.arcade.collide(stars, platforms);
     game.physics.arcade.collide(player, stars);
@@ -316,7 +315,6 @@ function update() {
     game.physics.arcade.collide(coins, platforms);
     game.physics.arcade.collide(player, FrogBoss);
 
-    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
      enemyMove(boars);
 
     if(player.x > 100)
@@ -324,8 +322,8 @@ function update() {
         EventTimer.start();
     }
 
-
     //  Reset the players velocity (movement)
+
     player.body.velocity.x = 0;
 
     if (cursors.left.isDown)
@@ -383,16 +381,12 @@ function update() {
     {
         player.frame = 1;
         fire();
-
-
     }
     
     if (game.input.activePointer.isDown && facing === 'left' && player.health > 0)
     {
         player.frame = 6;
         fire();
-
-
     }
 
     if(FrogBoss.x - player.x < 1300)
@@ -402,10 +396,9 @@ function update() {
 
     if(bossbullets.length > 0)
     {
-bossbullets.forEach(function(bossbullet)
-            {
-                game.physics.arcade.accelerateToObject(bossbullet, player, 175, 150, 150);
-            }, game.physics);
+        bossbullets.forEach(function(bossbullet){
+            game.physics.arcade.accelerateToObject(bossbullet, player, 175, 150, 150);
+         }, game.physics);
     }
     
     
@@ -546,14 +539,15 @@ function render() {
     function BubbleSpawn(){
 
         bubbles = game.add.group();
-        bubbles.physicsBodyType = Phaser.Physics.ARCADE;
-        bubbles.setAll('checkWorldBounds', true);
-        bubbles.setAll('outOfBoundsKill', true);
+        bubbles.enableBody = true;
 
         for(var i = 0; i < 5; i++)
         {
-            var bubble = bubbles.create(5400, game.world.height - 130, 'FrogBossBubble');
-            bubble.enableBody = true;
+            var bubble = bubbles.create(5000 + i * 150, game.world.height - 1200, 'FrogBossBubble');
+            bubble.body.collideWorldBounds = true;
+            bubble.body.gravity.y = 800;
+            bubble.scale.setTo(0.8, 0.8);
+            bubble.body.bounce.y = 0.7 + Math.random() * 0.2;
             bubble.body.velocity.y = -200;
 
         }
