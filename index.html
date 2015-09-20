@@ -236,7 +236,7 @@ game.time.advancedTiming = true
     boars.enableBody = true;
     
     for (var i = 0; i < 4; i++){
-        var boar = boars.create(1400 * i, game.world.height - 300, 'boar');
+        var boar = boars.create(1400 + i * 200, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
@@ -311,7 +311,6 @@ function update() {
     game.physics.arcade.collide(platforms, coins);
     game.physics.arcade.collide(coins, platforms);
     game.physics.arcade.collide(player, FrogBoss);
-
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
      enemyMove(boars);
@@ -391,7 +390,13 @@ function update() {
 
     }
 
-
+    if(bossbullets.length > 0)
+    {
+bossbullets.forEach(function(bossbullets)
+            {
+                game.physics.arcade.accelerateToObject(bossbullets, player, 600, 250, 250);
+            }, game.physics);
+    }
     label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + score + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
     label.anchor.setTo(0.5, 0.5);
     label.visible = false;
@@ -435,8 +440,6 @@ function update() {
         var bossbullet = bossbullets.getFirstDead();
         bossbullet.reset(FrogBoss.x - 120, FrogBoss.y - 50);
         bossbullet.lifespan = 1300;
-        game.physics.arcade.moveToPointer(bossbullet, 300);
-        //game.physics.moveToObject(bossbullet, player, 600, 6000);
         console.log("Fired");
     }
 
