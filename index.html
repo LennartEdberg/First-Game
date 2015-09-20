@@ -54,14 +54,17 @@ var explosions;
 var bullets;
 var sprite;
 var textStyle = { font: '64px Arial', align: 'center'};
-var fireRate = 350;
+var fireRate = 390;
 var BossfireRate = 500;
 var nextFire = 0;
 var bossnextFire = 0;
 var score = 0;
 var facing;
 var EventTimer;
+var ScoreTimer;
+var ScoreMinus = 0;
 var bubbles;
+var wasd;
 
 
 
@@ -194,6 +197,14 @@ game.time.advancedTiming = true
 
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
+
+            wasd = {
+                up: game.input.keyboard.addKey(Phaser.Keyboard.W),
+                down: game.input.keyboard.addKey(Phaser.Keyboard.S),
+                left: game.input.keyboard.addKey(Phaser.Keyboard.A),
+                right: game.input.keyboard.addKey(Phaser.Keyboard.D),
+            };
+
     game.camera.follow(player);
     
     //Add boxes!
@@ -202,16 +213,7 @@ game.time.advancedTiming = true
 
 
 
-    //for (var i = 0; i < 2; i++)
-    {
-        var box = boxes.create(600 + i *200, game.world.height - 300 - i * 202, 'box');
-        box.body.collideWorldBounds = true;
-        box.anchor.set(0.5);
-        box.name = "Box";
-        box.body.moves = false;
-        box.body.gravity.y = 90;
-        box.health = 50;
-    }
+
 
     // First boxes
     var box = boxes.create(1150, game.world.height - 320, 'box');
@@ -285,11 +287,12 @@ game.time.advancedTiming = true
     game.physics.enable(sprite, Phaser.Physics.ARCADE);
 
     sprite.body.allowRotation = false;
-    timer = game.add.text(250, 250, '00:00:00', textStyle);
     EventTimer = game.time.create(false);
-    EventTimer.loop(5000, BubbleSpawn, this);
+    EventTimer.loop(5000, fire, this);
 
-     this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    ScoreTimer = game.time.create(false);
+    ScoreTimer.loop(1000, updateScoreTime, this);
+    ScoreTimer.start();
 
 }
     
@@ -320,6 +323,7 @@ function update() {
     {
         EventTimer.start();
     }
+
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
@@ -426,6 +430,12 @@ bossbullets.forEach(function(bossbullet)
 }
 
     
+    function updateScoreTime()
+    {
+        ScoreMinus = ScoreMinus + 0.5;
+        console.log(ScoreMinus);
+    }
+
     function fire() {
 
     if (game.time.now > nextFire && bullets.countDead() > 0)
