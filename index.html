@@ -413,9 +413,7 @@ function update() {
             game.physics.arcade.accelerateToObject(bossbullet, player, 175, 150, 150);
          }, game.physics);
     }
-
     
-
     game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
     game.physics.arcade.overlap(stars, bullets, hitEnemy, null, this);
@@ -479,7 +477,9 @@ function render() {
         player.damage(10);
          if(player.health == 0){
             bmpText.visible = true;
+            game.input.onTap.addOnce(restart);
         }
+      
 
     }
 
@@ -488,6 +488,10 @@ function render() {
 
         player.damage(10);
         enemy.kill();
+        if(player.health == 0){
+            bmpText.visible = true;
+            game.input.onTap.addOnce(restart);
+        }
 
     }
 
@@ -496,6 +500,10 @@ function render() {
 
         player.damage(30);
         enemy.kill();
+        if(player.health == 0){
+            bmpText.visible = true;
+            game.input.onTap.addOnce(restart);
+        }
 
     }
 
