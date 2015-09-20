@@ -292,7 +292,6 @@ function update() {
     game.physics.arcade.collide(player, FrogBoss);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-   // game.physics.arcade.overlap(player, stars, null, this);
      enemyMove(boars);
 
     //  Reset the players velocity (movement)
@@ -347,14 +346,14 @@ function update() {
     
    sprite.rotation = game.physics.arcade.angleToPointer(sprite);
 
-    if (game.input.activePointer.isDown && facing === 'right')
+    if (game.input.activePointer.isDown && facing === 'right' && player.health > 0)
     {
         player.frame = 1;
         fire();
         Bossfire();
     }
     
-    if (game.input.activePointer.isDown && facing === 'left')
+    if (game.input.activePointer.isDown && facing === 'left' && player.health > 0)
     {
         player.frame = 6;
         fire();
@@ -362,9 +361,10 @@ function update() {
     }
 
 
-    label = game.add.text(width / 2 , height / 2, 'Score: ' + score + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+    label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + score + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
     label.anchor.setTo(0.5, 0.5);
     label.visible = false;
+    label.fixedToCamera = true;
 
     game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
