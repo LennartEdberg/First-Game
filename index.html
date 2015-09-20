@@ -205,7 +205,7 @@ game.time.advancedTiming = true
 
 
 
-    for (var i = 0; i < 2; i++)
+    //for (var i = 0; i < 2; i++)
     {
         var box = boxes.create(1000, game.world.height - 144 + i * 82, 'box');
         box.body.collideWorldBounds = true;
@@ -268,7 +268,7 @@ game.time.advancedTiming = true
         fire();
     }
     
-     
+     this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
     
 
@@ -359,7 +359,7 @@ function update() {
     }
     
     
-    label = game.add.text(width / 2 , height / 2, 'Score: ' + score + '\nGAME OVER\nPress SPACE to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+    label = game.add.text(width / 2 , height / 2, 'Score: ' + score + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
     label.anchor.setTo(0.5, 0.5);
     label.visible = false;
     
@@ -403,7 +403,12 @@ function render() {
         console.log(player.health);
       
         label.visible = true;
+        game.input.onTap.addOnce(restart);
+       
+    }
     
+    function restart(){
+        location.reload();
     }
     
     function collectCoin(player, coin)
