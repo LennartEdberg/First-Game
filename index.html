@@ -134,7 +134,7 @@ game.time.advancedTiming = true
 
 
     // The player and its settings
-    player = game.add.sprite(5300, game.world.height - 800, 'player');
+    player = game.add.sprite(50, game.world.height - 800, 'player');
 
     //  We need to enable physics on the player
     game.physics.arcade.enable(player);
@@ -181,6 +181,7 @@ game.time.advancedTiming = true
         star.health = 50;
     }
     
+
     coins = game.add.group();
     coins.enableBody = true;
     
@@ -192,7 +193,7 @@ game.time.advancedTiming = true
         coin.scale.setTo(0.8, 0.8);
         coin.body.bounce.y = 0.7 + Math.random() * 0.2;
     }
-    
+
 
 
     //  Our controls.
@@ -230,28 +231,28 @@ game.time.advancedTiming = true
     // Adds group for boars 
     boars = game.add.group();
     boars.enableBody = true;
-    
-    for (var i = 0; i < 4; i++){
-        var boar = boars.create(1400 + i * 200, game.world.height - 300, 'boar');
+
+    for (var i = 0; i < 3; i++){
+        var boar = boars.create(1700 + i * 200, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
         boar.health = 100;
         boar.velocity = 100;
-        boar.maxDistance = 1000 + i * 50;
-        boar.minDistance = 500 + i * 25;
+        boar.maxDistance = 400 + i * 300;
+        boar.minDistance = 200 + i * 50;
         boar.name = "BoarEnemy";
     }
     
-    for (var j = 0; j < 4; j++){
-        var boar = boars.create(2000 * j, game.world.height - 300, 'boar');
+    for (var j = 0; j < 3; j++){
+        var boar = boars.create(2000 + j * 200, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
         boar.health = 100;
         boar.velocity = 100;
-        boar.maxDistance = 1500 + j * 100;
-        boar.minDistance = 1000 + j * 50;
+        boar.maxDistance = 1000 + j * 200;
+        boar.minDistance = 500 + j * 100;
         boar.name = "BoarEnemy";
     }
         boars.forEach(function(boar){   
@@ -259,7 +260,7 @@ game.time.advancedTiming = true
             boar.animations.add('walk_right', [5, 6, 7, 8, 9], 10, true);
             boar.animations.add('Death', [0,1,2,3], 10, true);
         });
-                      
+
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -310,10 +311,10 @@ function update() {
     game.physics.arcade.collide(bubbles, platforms);
 
     totalScore = score - ScoreMinus;
-
+/*
      enemyMove(boars);
-
-    if(player.x > 100)
+*/
+    if(player.x > 3900)
     {
         EventTimer.start();
     }
@@ -551,7 +552,7 @@ function render() {
 
         for(var i = 0; i < 5; i++)
         {
-            var bubble = bubbles.create(4500 + i * 150, game.world.height - 1200, 'FrogBossBubble');
+            var bubble = bubbles.create(3800 + i * 300, game.world.height - 1200, 'FrogBossBubble');
             bubble.body.collideWorldBounds = true;
             bubble.body.gravity.y = 800;
             bubble.scale.setTo(0.8, 0.8);
