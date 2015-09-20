@@ -59,11 +59,6 @@ var BossfireRate = 100;
 var nextFire = 0;
 var bossnextFire = 0;
 var score = 0;
-var timer;
-var timer1;
-var milliseconds = 0;
-var seconds = 0;
-var minutes = 0;
 var facing;
 var EventTimer;
 
@@ -135,7 +130,7 @@ game.time.advancedTiming = true
 
 
     // The player and its settings
-    player = game.add.sprite(32, game.world.height - 800, 'player');
+    player = game.add.sprite(5300, game.world.height - 800, 'player');
 
     //  We need to enable physics on the player
     game.physics.arcade.enable(player);
@@ -320,7 +315,6 @@ function update() {
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
      enemyMove(boars);
-    updateTimer();
 
     if(player.x > 100)
     {
@@ -386,6 +380,7 @@ function update() {
         player.frame = 1;
         fire();
         Bossfire();
+
     }
     
     if (game.input.activePointer.isDown && facing === 'left' && player.health > 0)
@@ -393,6 +388,7 @@ function update() {
         player.frame = 6;
         fire();
         Bossfire();
+
     }
 
 
@@ -426,6 +422,7 @@ function update() {
         game.physics.arcade.moveToPointer(bullet, 500);
         bullet.play('Fireball', 20, true, false);
 
+
     }
 
 }
@@ -436,9 +433,10 @@ function update() {
     {
         bossnextFire = game.time.now + BossfireRate;
         var bossbullet = bossbullets.getFirstDead();
-        bossbullet.reset(FrogBoss.x, FrogBoss.y+7);
+        bossbullet.reset(FrogBoss.x - 120, FrogBoss.y - 50);
         bossbullet.lifespan = 1300;
-        game.physics.moveToObject(bossbullet, player, 600);
+        game.physics.arcade.moveToPointer(bossbullet, 300);
+        //game.physics.moveToObject(bossbullet, player, 600, 6000);
         console.log("Fired");
     }
 
@@ -547,28 +545,6 @@ function render() {
         console.log(enemy.name);
 
     }
-
-function updateTimer() {
-
-minutes = Math.floor(game.time.time / 60000) % 60;
-
-seconds = Math.floor(game.time.time / 1000) % 60;
-
-milliseconds = Math.floor(game.time.time) % 100;
-
-//If any of the digits becomes a single digit number, pad it with a zero
-if (milliseconds < 10)
-milliseconds = '0' + milliseconds;
-
-if (seconds < 10)
-seconds = '0' + seconds;
-
-if (minutes < 10)
-minutes = '0' + minutes;
-
-timer.setText(minutes + ':'+ seconds + ':' + milliseconds);
-    }
-
 
 </script>
 
