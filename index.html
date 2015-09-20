@@ -54,8 +54,8 @@ var explosions;
 var bullets;
 var sprite;
 var textStyle = { font: '64px Arial', align: 'center'};
-var fireRate = 300;
-var BossfireRate = 100;
+var fireRate = 350;
+var BossfireRate = 230;
 var nextFire = 0;
 var bossnextFire = 0;
 var score = 0;
@@ -378,7 +378,7 @@ function update() {
     {
         player.frame = 1;
         fire();
-        Bossfire();
+
 
     }
     
@@ -386,15 +386,20 @@ function update() {
     {
         player.frame = 6;
         fire();
-        Bossfire();
 
+
+    }
+
+    if(FrogBoss.x - player.x < 1300)
+    {
+        Bossfire();
     }
 
     if(bossbullets.length > 0)
     {
 bossbullets.forEach(function(bossbullets)
             {
-                game.physics.arcade.accelerateToObject(bossbullets, player, 600, 250, 250);
+                game.physics.arcade.accelerateToObject(bossbullets, player, 175, 150, 150);
             }, game.physics);
     }
     label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + score + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
@@ -408,7 +413,7 @@ bossbullets.forEach(function(bossbullets)
     game.physics.arcade.overlap(boxes, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(player, coins, collectCoin, null, this);
     game.physics.arcade.overlap(player, boars, DamagePlayer, null, this);
-    game.physics.arcade.overlap(player, bossbullets, DamagePlayer, null, this);
+    game.physics.arcade.overlap(player, bossbullets, BossDamagePlayer, null, this);
     game.physics.arcade.overlap(FrogBoss, bullets, hitEnemy, null, this);
 }
 
@@ -439,7 +444,7 @@ bossbullets.forEach(function(bossbullets)
         bossnextFire = game.time.now + BossfireRate;
         var bossbullet = bossbullets.getFirstDead();
         bossbullet.reset(FrogBoss.x - 120, FrogBoss.y - 50);
-        bossbullet.lifespan = 1300;
+        bossbullet.lifespan = 7000;
         console.log("Fired");
     }
 
@@ -456,6 +461,20 @@ function render() {
     {
 
         player.damage(10);
+        console.log(player.health);
+        if(player.health == 0)
+        {
+        label.visible = true;
+        game.input.onTap.addOnce(restart);
+        }
+
+    }
+
+        function BossDamagePlayer(player, enemy)
+    {
+
+        player.damage(10);
+        enemy.kill();
         console.log(player.health);
         if(player.health == 0)
         {
