@@ -415,6 +415,7 @@ function update() {
     game.physics.arcade.overlap(player, boars, DamagePlayer, null, this);
     game.physics.arcade.overlap(player, bossbullets, BossDamagePlayer, null, this);
     game.physics.arcade.overlap(FrogBoss, bullets, hitEnemy, null, this);
+    game.physics.arcade.overlap(player, bubbles, BubbleDamagePlayer, null, this);
 }
 
     
@@ -480,6 +481,19 @@ function render() {
     {
 
         player.damage(10);
+        enemy.kill();
+        if(player.health == 0)
+        {
+        label.visible = true;
+        game.input.onTap.addOnce(restart);
+        }
+
+    }
+
+     function BubbleDamagePlayer(player, enemy)
+    {
+
+        player.damage(30);
         enemy.kill();
         if(player.health == 0)
         {
