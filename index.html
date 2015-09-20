@@ -40,6 +40,7 @@ function preload() {
     game.load.spritesheet('deadPlayer', 'assets/deadPlayer.png', 79, 106);
 }
 
+var Loop;
 var player;
 var FrogBoss;
 var platforms;
@@ -52,16 +53,21 @@ var bosses;
 var explosions;
 var bullets;
 var sprite;
+var textStyle = { font: '64px Arial', align: 'center'};
 var fireRate = 300;
 var BossfireRate = 100;
 var nextFire = 0;
 var bossnextFire = 0;
 var score = 0;
 var timer;
+var timer1;
 var milliseconds = 0;
 var seconds = 0;
 var minutes = 0;
 var facing;
+var EventTimer;
+
+
 
 function create() {
 
@@ -163,7 +169,7 @@ game.time.advancedTiming = true
     for (var i = 0; i < 3; i++)
     {
        
-        var star = stars.create(1500 + i * 100, 300, 'star');
+        var star = stars.create(1400 + i * 75, 300, 'star');
         star.body.collideWorldBounds = true;
        
         star.name = "Barrel";
@@ -233,7 +239,7 @@ game.time.advancedTiming = true
     boars.enableBody = true;
     
     for (var i = 0; i < 4; i++){
-        var boar = boars.create(i * 1200, game.world.height - 300, 'boar');
+        var boar = boars.create(1400 * i, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
@@ -245,14 +251,14 @@ game.time.advancedTiming = true
     }
     
     for (var j = 0; j < 4; j++){
-        var boar = boars.create(j * 2000, game.world.height - 300, 'boar');
+        var boar = boars.create(2000 * j, game.world.height - 300, 'boar');
         boar.body.collideWorldBounds = true;
         boar.body.gravity.y = 1000;
         boar.body.bounce.y = 0.2;
         boar.health = 100;
         boar.velocity = 100;
-        boar.maxDistance = 1000 + j * 100;
-        boar.minDistance = 500 + j * 50;
+        boar.maxDistance = 1500 + j * 100;
+        boar.minDistance = 1000 + j * 50;
         boar.name = "BoarEnemy";
     }
         boars.forEach(function(boar){   
@@ -281,7 +287,9 @@ game.time.advancedTiming = true
     game.physics.enable(sprite, Phaser.Physics.ARCADE);
 
     sprite.body.allowRotation = false;
-
+    timer = game.add.text(250, 250, '00:00:00', textStyle);
+    EventTimer = game.time.create(false);
+    EventTimer.loop(5000, fire, this);
 
      this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
@@ -309,6 +317,12 @@ function update() {
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
      enemyMove(boars);
+    updateTimer();
+
+    if(player.x > 100)
+    {
+        EventTimer.start();
+    }
 
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
@@ -424,7 +438,6 @@ function render() {
 
     game.debug.text('FPS:' + game.time.fps || '--', 20, 20, "#ffffff");
     game.debug.text('Score:' + score || '--', 20, 40, "#ffffff");
-    timer = game.debug.text(minutes + ':' + seconds + ':' + milliseconds, 20, 60);
 
 }
     
@@ -433,9 +446,11 @@ function render() {
 
         player.damage(10);
         console.log(player.health);
+        if(player.health == 0)
+        {
         label.visible = true;
         game.input.onTap.addOnce(restart);
-
+        }
     }
 
     function restart(){
