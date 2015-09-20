@@ -65,6 +65,8 @@ var ScoreTimer;
 var ScoreMinus = 0;
 var bubbles;
 var totalScore = 0;
+var infolabel;
+var infolabel2;
 
 
 
@@ -399,6 +401,10 @@ function update() {
     }
     
     
+    infolabel = game.add.text(200, 300, 'Use the arrow-keys to move around!',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+    infolabel2 = game.add.text(300, 500, 'Shoot fireballs with Mouse1!',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
+
+
     label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + totalScore + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
     label.anchor.setTo(0.5, 0.5);
     label.visible = false;
