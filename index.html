@@ -30,6 +30,7 @@ function preload() {
     game.load.image('frogboss', 'assets/GrodBoss.png');
     game.load.image('FrogBossProjectile', 'assets/FrogBossProjectile.png');
     game.load.image('FrogBossBubble', 'assets/FrogBossBubble.png');
+    game.load.bitmapFont('font', 'assets/font.png', 'assets/font.fnt');
     game.load.spritesheet('bullet', 'assets/FireballSprite.png', 124, 43);
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
     game.load.spritesheet('explosion', 'assets/ExplosionSprite.png', 113, 105);
@@ -67,6 +68,7 @@ var bubbles;
 var totalScore = 0;
 var infolabel;
 var infolabel2;
+var bmpText;
 
 
 
@@ -133,7 +135,6 @@ game.time.advancedTiming = true
     
     ledge = platforms.create(4200, game.world.height - 500, 'platform');
     ledge.body.immovable = true;
-
 
     // The player and its settings
     player = game.add.sprite(50, game.world.height - 800, 'player');
@@ -289,6 +290,16 @@ game.time.advancedTiming = true
     ScoreTimer = game.time.create(false);
     ScoreTimer.loop(1000, updateScoreTime, this);
     ScoreTimer.start();
+    
+    bmpText = game.add.bitmapText(game.camera.width / 2, game.camera.height / 2, 'font', 'Phaser & Pixi\nrocking!', 64);
+    bmpText.fixedToCamera = true;
+    bmpText.text = 'GAME OVER \n Score:' + totalScore + '\n Click to restart';
+    bmpText.visible = false;
+    
+    bmpText2 = game.add.bitmapText(game.camera.width / 2, game.camera.height / 2, 'font', 'Phaser & Pixi\nrocking!', 64);
+    bmpText2.fixedToCamera = true;
+    bmpText2.text = 'You won! \n Score:' + totalScore + '\n Click to restart';
+    bmpText2.visible = false;
 
 }
     
@@ -399,21 +410,7 @@ function update() {
             game.physics.arcade.accelerateToObject(bossbullet, player, 175, 150, 150);
          }, game.physics);
     }
-    
-    
-//    infolabel = game.add.text(200, 300, 'Use the arrow-keys to move around!',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
-//    infolabel2 = game.add.text(300, 500, 'Shoot fireballs with Mouse1!',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
-//
-//
-//    label = game.add.text(game.camera.width / 2, game.camera.height / 2, 'Score: ' + totalScore + '\nGAME OVER\nPress mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
-//    label.anchor.setTo(0.5, 0.5);
-//    label.visible = false;
-//    label.fixedToCamera = true;
-//    
-//    labelWin = game.add.text(game.camera.width / 2, game.camera.height / 2, 'You WIN!\n Score: ' + totalScore + '\n click mouse1 to restart',{ font: '42px Lucida Console', fill: '#fff', align: 'center'});
-//    labelWin.anchor.setTo(0.5, 0.5);
-//    labelWin.visible = false;
-//    labelWin.fixedToCamera = true;
+
 
     game.physics.arcade.overlap(boars, bullets, hitEnemy, null, this);
     game.physics.arcade.overlap(platforms, bullets, hitObstacle, null, this);
@@ -476,11 +473,8 @@ function render() {
     {
 
         player.damage(10);
-        
-        if(player.health == 0)
-        {
-            label.visible = true;
-            game.input.onTap.addOnce(restart);
+         if(player.health == 0){
+            bmpText.visible = true;
         }
 
     }
@@ -490,10 +484,8 @@ function render() {
 
         player.damage(10);
         enemy.kill();
-        if(player.health == 0)
-        {
-        label.visible = true;
-        game.input.onTap.addOnce(restart);
+        if(player.health == 0){
+            bmpText.visible = true;
         }
 
     }
@@ -503,17 +495,15 @@ function render() {
 
         player.damage(30);
         enemy.kill();
-        if(player.health == 0)
-        {
-        label.visible = true;
-        game.input.onTap.addOnce(restart);
+        if(player.health == 0){
+            bmpText.visible = true;
         }
 
     }
 
     function restart(){
-        game.time.events.remove(Loop);
         location.reload();
+        game.time.events.remove(Loop);
     }
     
     function collectCoin(player, coin)
@@ -611,9 +601,12 @@ function render() {
         }
         
         if(FrogBoss.health == 0){
-            labelWin.visible = true;
+            bmpText2.text = 'You won! \n Score:' + totalScore + '\n Click to restart';
+            bmpText2.visible = true;
             game.input.onTap.addOnce(restart);
         }
+        
+        
 
     }
 
