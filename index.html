@@ -403,7 +403,7 @@ function update() {
         fire();
     }
 
-    if(FrogBoss.x - player.x < 1300)
+    if(FrogBoss.x - player.x < 1300 && FrogBoss.health > 0 && player.health > 0)
     {
         Bossfire();
     }
@@ -441,7 +441,7 @@ function update() {
         var bullet = bullets.getFirstDead();
         bullet.scale.setTo(0.8,0.8);
         bullet.reset(player.x, player.y+7);
-        bullet.lifespan = 2000;
+        bullet.lifespan = 1500;
         var animation = bullet.animations.add('Fireball', [0,1,2,3], 20, true);
         bullet.rotation = game.physics.arcade.angleToPointer(player);
         game.physics.arcade.moveToPointer(bullet, 500);
@@ -553,7 +553,8 @@ function render() {
 
         bubbles = game.add.group();
         bubbles.enableBody = true;
-
+        if(FrogBoss.health > 0 && player.health > 0)
+        {
         for(var i = 0; i < 5; i++)
         {
             var bubble = bubbles.create(3800 + i * 300, game.world.height - 1200, 'FrogBossBubble');
@@ -564,6 +565,7 @@ function render() {
             bubble.body.velocity.y = -200;
             bubble.lifespan = 3500;
 
+        }
         }
 
     }
