@@ -30,6 +30,7 @@ function preload() {
     game.load.image('frogboss', 'assets/GrodBoss.png');
     game.load.image('FrogBossProjectile', 'assets/FrogBossProjectile.png');
     game.load.image('FrogBossBubble', 'assets/FrogBossBubble.png');
+    game.load.image('Instructions', 'assets/Instructionspicture.png');
     game.load.bitmapFont('font', 'assets/font.png', 'assets/font.fnt');
     game.load.spritesheet('bullet', 'assets/FireballSprite.png', 124, 43);
     game.load.spritesheet('player', 'assets/PlayerSprite2.png', 74, 111);
@@ -100,6 +101,7 @@ game.time.advancedTiming = true
 
     //  A simple background for our game
     game.add.sprite(0, 0, 'sky');
+    game.add.sprite(150, 150, 'Instructions');
     game.add.sprite(width, 0, 'sky');
     game.add.sprite(width + width, 0, 'sky');
 
